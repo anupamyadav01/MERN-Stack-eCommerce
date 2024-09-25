@@ -1,19 +1,22 @@
-import { useState } from "react";
 import Router from "./router/Router";
+import { createContext, useState } from "react";
+
+// Create a ThemeContext
+export const ThemeContext = createContext();
 
 const App = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [theme, setTheme] = useState("light");
 
   const toggleTheme = () => {
-    setDarkMode(!darkMode);
+    setTheme(theme === "light" ? "dark" : "light");
   };
 
   return (
-    <div className={darkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white transition-colors">
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      <div className="min-h-screen bg-gray-100 text-gray-800 transition-colors">
         <Router />
       </div>
-    </div>
+    </ThemeContext.Provider>
   );
 };
 

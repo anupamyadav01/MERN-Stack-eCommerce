@@ -22,7 +22,7 @@ userRouter.post("/logout", logout);
 
 userRouter.get("/users", authMiddleware, getUsers);
 
-userRouter.get("/isLoggedIn", loginMiddleware, checkLoggedIn);
+userRouter.post("/isLoggedIn", loginMiddleware, checkLoggedIn);
 
 userRouter.post("/forgot-password", forgotPassword);
 

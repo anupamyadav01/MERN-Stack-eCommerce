@@ -8,6 +8,8 @@ import ForgotPassword from "../components/ForgetPassword";
 import AddProduct from "../components/Products/AddProduct";
 import axios from "axios";
 import PrivateRoute from "../components/PrivateRoute";
+import Products from "../pages/Products/Products";
+import Dashboard from "../pages/Dashboard/Dashboard";
 
 // Export LoginContext for use in other components
 export const LoginContext = createContext();
@@ -21,10 +23,12 @@ const Router = () => {
     const checkUserStatus = async () => {
       try {
         // Check if user is logged in
-        const loginResponse = await axios.get(
+        const loginResponse = await axios.post(
           `http://localhost:10001/api/user/isLoggedIn`,
+          {},
           { withCredentials: true }
         );
+        console.log(loginResponse);
 
         if (loginResponse?.status === 200) {
           setIsLoggedIn(true);
@@ -35,6 +39,7 @@ const Router = () => {
             {},
             { withCredentials: true }
           );
+          console.log(roleResponse);
 
           if (roleResponse?.status === 200 && roleResponse.data.role) {
             setUserRole(roleResponse.data.role); // Assume response contains user role
@@ -58,13 +63,22 @@ const Router = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/products" element={<Products />} />
 
           {/* Private route only accessible by admin */}
           <Route
             path="/add-product"
             element={
-              <PrivateRoute isAllowed={isLoggedIn && userRole === "admin"}>
+              <PrivateRoute isAllowed={isLoggedIn && userRole === "ADMIN"}>
                 <AddProduct />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute isAllowed={isLoggedIn && userRole === "ADMIN"}>
+                <Dashboard />
               </PrivateRoute>
             }
           />

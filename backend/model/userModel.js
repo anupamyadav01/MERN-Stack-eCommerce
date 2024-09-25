@@ -15,8 +15,15 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
   },
+  role: {
+    type: String,
+    requireed: true,
+    enum: ["CUSTOMER", "ADMIN", "SELLER"],
+  },
   token: {
     type: String,
+    required: false,
+    default: "",
   },
   otp: {
     type: String,

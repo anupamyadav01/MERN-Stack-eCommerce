@@ -1,14 +1,16 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginContext } from "../router/Router";
+import { ThemeContext } from "../App"; // Import ThemeContext for dark mode
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
-  // console.log(isLoggedIn);
+
+  const { darkMode, toggleTheme } = useContext(ThemeContext); // Access dark mode and toggle
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -19,12 +21,9 @@ const Navbar = () => {
       const response = await axios.post(
         `http://localhost:10001/api/user/logout`,
         {},
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       if (response.status === 200) {
-        console.log("User logged out successfully");
         toast.success("User logged out successfully", {
           position: "top-right",
         });
@@ -39,7 +38,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-lg fixed w-full z-10">
+    <nav className="bg-white dark:bg-gray-800 shadow-lg sticky top-0 w-full z-10">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <div className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -55,10 +54,10 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            to="/about"
+            to="/products"
             className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
           >
-            About
+            Products
           </Link>
           <Link
             to="/services"
@@ -74,14 +73,30 @@ const Navbar = () => {
           </Link>
         </div>
 
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
+        >
+          {darkMode ? "🌙 Dark Mode" : "☀️ Light Mode"}
+        </button>
+
         {/* Register & Login buttons */}
         {isLoggedIn ? (
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition"
-          >
-            Logout
-          </button>
+          <span className="flex space-x-4">
+            <Link
+              to="/dashboard"
+              className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
+            >
+              Dashboard
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition"
+            >
+              Logout
+            </button>
+          </span>
         ) : (
           <div className="hidden md:flex space-x-4">
             <Link
@@ -138,10 +153,10 @@ const Navbar = () => {
               Home
             </Link>
             <Link
-              to="/about"
+              to="/products"
               className="block text-gray-700 dark:text-gray-300 hover:text-blue-500"
             >
-              About
+              Products
             </Link>
             <Link
               to="/services"

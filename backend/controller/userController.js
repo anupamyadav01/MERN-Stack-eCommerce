@@ -25,6 +25,7 @@ export const register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      role: "CUSTOMER",
     };
     const newlyCreatedUser = await UserModel.create(userData);
     console.log(newlyCreatedUser);
@@ -66,6 +67,7 @@ export const login = async (req, res) => {
     const jwtPayload = {
       name: existingUser.name,
       email: existingUser.email,
+      role: existingUser.role,
     };
 
     const token = jwt.sign(jwtPayload, process.env.JWT_SECRET, {
@@ -116,9 +118,8 @@ export const getUsers = async (req, res) => {
 export const checkLoggedIn = async (req, res) => {
   try {
     const user = req.user;
-    return res.json({
+    return res.status(200).json({
       sucess: true,
-      user: user,
     });
   } catch (error) {}
   res.send({ sucess: true, message: "checking user logged in" });
