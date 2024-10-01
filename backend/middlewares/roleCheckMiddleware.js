@@ -4,12 +4,14 @@ export const roleCheckMiddleware = async (req, res, next) => {
 
     const user = req.user;
 
-    if (user.role !== "admin") {
-      return res
-        .status(401)
-        .json({ success: false, message: "Unauthorized access" });
+    if (user.role === "admin") {
+      next();
+    } else {
+      return res.status(200).send({
+        sucess: true,
+        role: user.role,
+      });
     }
-    next();
   } catch (error) {
     console.log(error);
 

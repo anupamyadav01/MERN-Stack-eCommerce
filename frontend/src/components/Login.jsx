@@ -36,7 +36,6 @@ const Login = () => {
         }, 2000);
       }
     } catch (error) {
-      setIsLoggedIn(false);
       if (error?.response?.data?.message) {
         toast.error(error?.response?.data?.message, {
           position: "top-right",

@@ -26,8 +26,8 @@ const Navbar = () => {
         console.log("User logged out successfully.");
         navigate("/login");
         setTimeout(() => {
-          isAdmin(false);
           setIsLoggedIn(false);
+          isAdmin(false);
         }, 2000);
       }
     } catch (error) {

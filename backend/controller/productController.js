@@ -31,7 +31,23 @@ export const checkRole = async (req, res) => {
 
 export const showProducts = async (req, res) => {
   try {
-    const products = await ProductModel.find();
+    console.log(req.query);
+
+    let query = {};
+    let sortArgs = {};
+    if (req.query.brand) {
+      query.brand = req.query.brand;
+    }
+    if (req.query.category) {
+      query.category = req.query.category;
+    }
+    if (req.query.sortBy && req.query.sortOrder) {
+      const sortBy = req.query.sortBy;
+      const sortOrder = req.query.sortOrder.toLowerCase() === "dec" ? -1 : 1;
+
+      sortArgs[sortBy] = sortOrder;
+    }
+    const products = await ProductModel.find(query).sort(sortArgs);
     return res.status(200).json({
       success: true,
       message: "Products fetched successfully",
