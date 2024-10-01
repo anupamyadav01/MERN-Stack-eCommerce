@@ -14,7 +14,7 @@ const Login = () => {
     try {
       e.preventDefault();
       const response = await axios.post(
-        `http://localhost:10001/api/user/login`,
+        `http://localhost:8000/api/user/login`,
         {
           email,
           password,
@@ -26,16 +26,17 @@ const Login = () => {
       console.log(response);
 
       if (response.status === 200) {
+        setIsLoggedIn(true);
         console.log("User logged in successfully.");
         toast.success("User LoggedIn Successfully", {
           position: "top-right",
         });
-        setIsLoggedIn(true);
         setTimeout(() => {
           navigate("/");
         }, 2000);
       }
     } catch (error) {
+      setIsLoggedIn(false);
       toast.error("User Login Failed", {
         position: "top-right",
       });

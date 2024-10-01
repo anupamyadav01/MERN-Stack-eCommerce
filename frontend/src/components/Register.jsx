@@ -10,28 +10,32 @@ const Register = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await axios.post(
-      `http://localhost:10001/api/user/register`,
-      {
-        name,
-        email,
-        password,
-      },
-      {
-        withCredentials: true,
-      }
-    );
-    if (response.status === 201) {
-      console.log("User registered successfully");
-      toast.success("User registered successfully", {
-        position: "top-right",
-        style: {
-          background: "#333",
-          color: "#fff",
+    try {
+      e.preventDefault();
+      const response = await axios.post(
+        `http://localhost:8000/api/user/register`,
+        {
+          name,
+          email,
+          password,
         },
-      });
-      navigate("/login");
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 201) {
+        console.log("User registered successfully");
+        toast.success("User registered successfully", {
+          position: "top-right",
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+        });
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

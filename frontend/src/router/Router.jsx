@@ -5,18 +5,22 @@ import Register from "../components/Register";
 import Login from "../components/Login";
 import { createContext, useEffect, useState } from "react";
 import ForgotPassword from "../components/ForgetPassword";
-import AddProduct from "../components/Products/AddProduct";
+import AddProduct from "../pages/Dashboard/Products/AddProduct";
 import axios from "axios";
 import PrivateRoute from "../components/PrivateRoute";
-import Products from "../pages/Products/Products";
+import Products from "../pages/Dashboard/Products/Products";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import RemoveProduct from "../pages/Dashboard/Products/RemoveProduct";
+import EditProduct from "../pages/Dashboard/Products/EditProduct";
+import AllProducts from "../pages/Dashboard/Products/AllProducts";
+import AllUsers from "../pages/Dashboard/Products/AllUsers";
 
 // Export LoginContext for use in other components
 export const LoginContext = createContext();
 
 const Router = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userRole, setUserRole] = useState(null); // Can hold admin or user roles
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // Combined hook to check both login status and user role
   useEffect(() => {
@@ -24,7 +28,7 @@ const Router = () => {
       try {
         // Check if user is logged in
         const loginResponse = await axios.post(
-          `http://localhost:10001/api/user/isLoggedIn`,
+          `http://localhost:8000/api/user/isLoggedIn`,
           {},
           { withCredentials: true }
         );
@@ -32,31 +36,35 @@ const Router = () => {
 
         if (loginResponse?.status === 200) {
           setIsLoggedIn(true);
+          if (loginResponse.data.role === "admin") {
+            setIsAdmin(true);
+          }
 
           // Check user role after confirming they are logged in
-          const roleResponse = await axios.post(
-            `http://localhost:10001/api/product/check-role`,
-            {},
-            { withCredentials: true }
-          );
-          console.log(roleResponse);
+          // const roleResponse = await axios.post(
+          //   `http://localhost:8000/api/product/check-role`,
+          //   {},
+          //   { withCredentials: true }
+          // );
+          // console.log("checking user role", roleResponse);
 
-          if (roleResponse?.status === 200 && roleResponse.data.role) {
-            setUserRole(roleResponse.data.role); // Assume response contains user role
-          }
+          // if (roleResponse?.status === 200 && roleResponse.data.role) {
+          //   setUserRole(roleResponse.data.role); // Assume response contains user role
+          // }
         }
       } catch (error) {
         setIsLoggedIn(false);
-        console.log("User check error: ", error);
+        console.log("Error From Check User Role: ", error);
       }
     };
 
     checkUserStatus();
-  }, []); // Only run once after component mounts
+  }, [isLoggedIn]);
+  console.log(isAdmin);
 
   return (
     <BrowserRouter>
-      <LoginContext.Provider value={{ isLoggedIn, userRole, setIsLoggedIn }}>
+      <LoginContext.Provider value={{ isLoggedIn, isAdmin, setIsLoggedIn }}>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -69,16 +77,58 @@ const Router = () => {
           <Route
             path="/add-product"
             element={
-              <PrivateRoute isAllowed={isLoggedIn && userRole === "ADMIN"}>
+              <PrivateRoute isAllowed={isLoggedIn && isAdmin}>
+                <AddProduct />
+              </PrivateRoute>
+            }
+          />
+
+          {/* Admin routes start from here */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <PrivateRoute isAllowed={isLoggedIn && isAdmin}>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/add-product"
+            element={
+              <PrivateRoute isAllowed={isLoggedIn && isAdmin}>
                 <AddProduct />
               </PrivateRoute>
             }
           />
           <Route
-            path="/dashboard"
+            path="/admin/remove-product"
             element={
-              <PrivateRoute isAllowed={isLoggedIn && userRole === "ADMIN"}>
-                <Dashboard />
+              <PrivateRoute isAllowed={isLoggedIn && isAdmin}>
+                <RemoveProduct />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/edit-product"
+            element={
+              <PrivateRoute isAllowed={isLoggedIn && isAdmin}>
+                <EditProduct />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/all-products"
+            element={
+              <PrivateRoute isAllowed={isLoggedIn && isAdmin}>
+                <AllProducts />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/all-users"
+            element={
+              <PrivateRoute isAllowed={isLoggedIn && isAdmin}>
+                <AllUsers />
               </PrivateRoute>
             }
           />

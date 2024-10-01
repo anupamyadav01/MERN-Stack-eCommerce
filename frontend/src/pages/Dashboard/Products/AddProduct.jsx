@@ -20,17 +20,13 @@ const AddProduct = () => {
     setProductData({ ...productData, [name]: value });
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
-    setProductData({ ...productData, images: imageUrls });
-  };
+  const handleImageChange = (e) => {};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:10001/api/product/add-product`,
+        `http://localhost:8000/api/product/add-product`,
         productData,
         {
           withCredentials: true,

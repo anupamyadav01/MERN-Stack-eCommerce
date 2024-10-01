@@ -25,10 +25,10 @@ export const register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: "CUSTOMER",
+      role: "customer",
     };
     const newlyCreatedUser = await UserModel.create(userData);
-    console.log(newlyCreatedUser);
+    // console.log(newlyCreatedUser);
     res
       .status(201)
       .json({ sucess: true, message: "User created successfully" });
@@ -82,7 +82,7 @@ export const login = async (req, res) => {
       path: "/",
       expires: new Date(Date.now() + 3600000),
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "strict",
     });
 
     return res
@@ -120,9 +120,16 @@ export const checkLoggedIn = async (req, res) => {
     const user = req.user;
     return res.status(200).json({
       sucess: true,
+      role: user.role,
     });
-  } catch (error) {}
-  res.send({ sucess: true, message: "checking user logged in" });
+  } catch (error) {
+    console.log("Error from Checklogged In");
+
+    return res.status(500).json({
+      sucess: false,
+      message: "Something went wrong, please try again later.",
+    });
+  }
 };
 
 export const logout = async (req, res) => {
@@ -139,6 +146,13 @@ export const forgotPassword = async (req, res) => {
       return res
         .status(400)
         .json({ success: false, message: "Email is required" });
+    }
+    // check in bd wheater user exists or not in database
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User not found" });
     }
 
     const otpExpiryTime = 10; // 10 minutes expiry time
@@ -175,7 +189,6 @@ export const forgotPassword = async (req, res) => {
         { $set: { otp } },
         { new: true }
       );
-      console.log("updatedUser:", updatedUser);
     }
     return res
       .status(200)

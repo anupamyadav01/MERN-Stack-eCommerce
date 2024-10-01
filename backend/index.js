@@ -6,7 +6,7 @@ import cors from "cors";
 import ProductRouter from "./routes/productRoutes.js";
 
 const app = express();
-const PORT = process.env.PORT || 10001;
+const PORT = process.env.PORT || 8000;
 app.use(express.json());
 app.use(
   cors({

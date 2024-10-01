@@ -6,7 +6,7 @@ const SendOTP = ({ email, setStatus, setEmail }) => {
   const handleSendOTP = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:10001/api/user/forgot-password`,
+        `http://localhost:8000/api/user/forgot-password`,
         { email }
       );
       if (response.status === 200) {
@@ -19,7 +19,8 @@ const SendOTP = ({ email, setStatus, setEmail }) => {
         }, 2000);
       }
     } catch (error) {
-      console.log("error from handleSendOTP", error);
+      console.log(error.response.data.message);
+      toast.error("User not found", { position: "top-right" });
     }
   };
   return (
