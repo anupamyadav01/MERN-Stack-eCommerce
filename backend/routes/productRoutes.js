@@ -4,7 +4,7 @@ import { roleCheckMiddleware } from "../middlewares/roleCheckMiddleware.js";
 
 const ProductRouter = express.Router();
 
-ProductRouter.post("/add-product", roleCheckMiddleware, addProduct);
+ProductRouter.post("/create-product", roleCheckMiddleware, addProduct);
 
 ProductRouter.get("/products", showProducts);
 

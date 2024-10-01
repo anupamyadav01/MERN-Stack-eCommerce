@@ -26,7 +26,7 @@ const AddProduct = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/product/add-product`,
+        `http://localhost:8000/api/product/create-product`,
         productData,
         {
           withCredentials: true,

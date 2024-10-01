@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginContext } from "../router/Router";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { LoginContext } from "../App";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -20,12 +20,13 @@ const Navbar = () => {
         { withCredentials: true }
       );
       if (response.status === 200) {
-        toast.success("User logged out successfully", {
+        toast.success("User Logged Out Successfully", {
           position: "top-right",
-          duration: 3000,
         });
+        console.log("User logged out successfully.");
         navigate("/login");
         setTimeout(() => {
+          isAdmin(false);
           setIsLoggedIn(false);
         }, 2000);
       }

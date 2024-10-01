@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginContext } from "../router/Router";
 import toast, { Toaster } from "react-hot-toast";
+import { LoginContext } from "../App";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -37,9 +37,16 @@ const Login = () => {
       }
     } catch (error) {
       setIsLoggedIn(false);
-      toast.error("User Login Failed", {
-        position: "top-right",
-      });
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message, {
+          position: "top-right",
+        });
+      } else {
+        toast.error("Something went wrong. Please try again.", {
+          position: "top-right",
+        });
+      }
+
       console.log("User login failed -->", error);
     }
   };

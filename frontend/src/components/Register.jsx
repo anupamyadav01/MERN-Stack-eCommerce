@@ -32,10 +32,14 @@ const Register = () => {
             color: "#fff",
           },
         });
-        navigate("/login");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+      });
     }
   };
 
