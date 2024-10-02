@@ -31,8 +31,6 @@ export const checkRole = async (req, res) => {
 
 export const showProducts = async (req, res) => {
   try {
-    console.log(req.query);
-
     let query = {};
     let sortArgs = {};
     if (req.query.brand) {
@@ -47,6 +45,27 @@ export const showProducts = async (req, res) => {
 
       sortArgs[sortBy] = sortOrder;
     }
+    const operators = {
+      "=": "$eq",
+      "<": "$lt",
+      ">": "$gt",
+      "<=": "$lte",
+      ">=": "$gte",
+    };
+
+    const operatorsArray = Object.keys(operators);
+    operatorsArray.forEach((operator) => {
+      if (req?.query?.price?.startsWith(operator)) {
+        query.price = {
+          [operators[operator]]: req.query.price.slice(operator.length),
+        };
+      }
+    });
+    if (req.query.title) {
+      query.title = { $regex: req.query.title, $options: "i" }; // here i stands for case insensitive means it will ignore the case of the letters
+    }
+    console.log(query);
+
     const products = await ProductModel.find(query).sort(sortArgs);
     return res.status(200).json({
       success: true,
