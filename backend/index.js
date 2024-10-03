@@ -26,3 +26,9 @@ app.use("/api/product", ProductRouter);
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
+
+// Universal Error Handler
+app.use((error, req, res, next) => {
+  console.log(error);
+  res.status(500).send({ message: "Something went wrong" });
+});
