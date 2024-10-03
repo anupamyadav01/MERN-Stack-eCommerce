@@ -6,7 +6,7 @@ const SendOTP = ({ email, setStatus, setEmail }) => {
   const handleSendOTP = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/user/forgot-password`,
+        `http://localhost:9000/api/user/forgot-password`,
         { email }
       );
       if (response.status === 200) {

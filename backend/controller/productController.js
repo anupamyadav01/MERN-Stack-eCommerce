@@ -1,15 +1,37 @@
 import { ProductModel } from "../model/productModel.js";
-import jwt from "jsonwebtoken";
-import { UserModel } from "../model/userModel.js";
 export const addProduct = async (req, res) => {
   try {
-    // getting token form frontend
-
-    const product = await ProductModel.create(req.body);
+    const {
+      title,
+      description,
+      price,
+      discountPercentage,
+      rating,
+      stock,
+      brand,
+      category,
+      thumbnail,
+      productImage,
+      addedBy,
+    } = req.body;
+    const product = await ProductModel.create({
+      title,
+      description,
+      price,
+      discountPercentage,
+      rating,
+      stock,
+      brand,
+      category,
+      thumbnail,
+      productImage: req.secure_url,
+      addedBy: req.user._id,
+    });
+    console.log("Product add Executed");
     return res.status(200).json({
       success: true,
       message: "Product created successfully ",
-      productTitle: product.title,
+      productTitle: product,
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });

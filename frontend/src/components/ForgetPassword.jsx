@@ -17,7 +17,7 @@ const ForgotPassword = () => {
   const handleVerifyOTP = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/user/verify-otp`,
+        `http://localhost:9000/api/user/verify-otp`,
         {
           email,
           otp,
@@ -40,7 +40,7 @@ const ForgotPassword = () => {
   const handleChangePassword = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/user/reset-password`,
+        `http://localhost:9000/api/user/reset-password`,
         {
           email,
           password,

@@ -1,55 +1,65 @@
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    default: "",
+const productSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      default: "",
+    },
+    description: {
+      type: String,
+      // required: true,
+      default: "",
+    },
+    price: {
+      type: Number,
+      // required: true,
+      default: 0,
+    },
+    discountPercentage: {
+      type: Number,
+      // required: true,
+      default: 0,
+    },
+    rating: {
+      type: Number,
+      // required: true,
+      default: 0,
+    },
+    stock: {
+      type: Number,
+      // required: true,
+      default: 0,
+    },
+    brand: {
+      type: String,
+      // required: true,
+      default: "",
+    },
+    category: {
+      type: String,
+      // required: true,
+      default: "",
+    },
+    thumbnail: {
+      type: String,
+      // required: true,
+      default: "",
+    },
+    productImage: {
+      type: String,
+      default: "",
+    },
+    addedBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
-  description: {
-    type: String,
-    // required: true,
-    default: "",
-  },
-  price: {
-    type: Number,
-    // required: true,
-    default: 0,
-  },
-  discountPercentage: {
-    type: Number,
-    // required: true,
-    default: 0,
-  },
-  rating: {
-    type: Number,
-    // required: true,
-    default: 0,
-  },
-  stock: {
-    type: Number,
-    // required: true,
-    default: 0,
-  },
-  brand: {
-    type: String,
-    // required: true,
-    default: "",
-  },
-  category: {
-    type: String,
-    // required: true,
-    default: "",
-  },
-  thumbnail: {
-    type: String,
-    // required: true,
-    default: "",
-  },
-  images: {
-    type: [String],
-    default: [],
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 export const ProductModel = mongoose.model("products", productSchema);

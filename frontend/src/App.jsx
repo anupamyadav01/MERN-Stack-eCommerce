@@ -13,7 +13,7 @@ const App = () => {
       try {
         // Check if user is logged in
         const loginResponse = await axios.post(
-          `http://localhost:8000/api/user/isLoggedIn`,
+          `http://localhost:9000/api/user/isLoggedIn`,
           {},
           { withCredentials: true }
         );

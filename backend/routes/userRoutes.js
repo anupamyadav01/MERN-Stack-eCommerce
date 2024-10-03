@@ -10,8 +10,8 @@ import {
   verifyOTP,
 } from "../controller/userController.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
-import loginMiddleware from "../middlewares/loginMiddleware.js";
 import { roleCheckMiddleware } from "../middlewares/roleCheckMiddleware.js";
+import getUserDetails from "../middlewares/getUserDetailsM.js";
 
 const userRouter = express.Router();
 
@@ -25,7 +25,7 @@ userRouter.get("/users", authMiddleware, getUsers);
 
 userRouter.post(
   "/isLoggedIn",
-  loginMiddleware,
+  getUserDetails,
   roleCheckMiddleware,
   checkLoggedIn
 );

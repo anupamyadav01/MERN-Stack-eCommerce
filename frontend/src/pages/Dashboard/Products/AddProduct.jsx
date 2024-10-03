@@ -12,40 +12,39 @@ const AddProduct = () => {
     brand: "",
     category: "",
     thumbnail: "",
-    images: [],
+    image: "",
   });
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]; // Get the first file from the FileList
+    setProductData({ ...productData, productImage: file }); // Store the file in state
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProductData({ ...productData, [name]: value });
   };
 
-  const handleImageChange = (e) => {};
-
-  const handleSubmit = async (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+
+    // Append each product data to the FormData object
+    Object.keys(productData).forEach((key) => {
+      formData.append(key, productData[key]);
+    });
+
+    console.log(productData);
+
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/product/create-product`,
-        productData,
+        `http://localhost:9000/api/product/create-product`,
+        formData,
         {
           withCredentials: true,
         }
       );
       console.log("Product added successfully", response.data);
-      // Reset form after successful submission
-      // setProductData({
-      //   title: "",
-      //   description: "",
-      //   price: "",
-      //   discountPercentage: "",
-      //   rating: "",
-      //   stock: "",
-      //   brand: "",
-      //   category: "",
-      //   thumbnail: "",
-      //   images: [],
-      // });
     } catch (error) {
       console.error("Error adding product", error);
     }
@@ -56,7 +55,7 @@ const AddProduct = () => {
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
         Add New Product
       </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleOnSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           {/* Title */}
           <div className="flex flex-col">
@@ -185,11 +184,11 @@ const AddProduct = () => {
           <label className="text-gray-600 font-semibold">Images</label>
           <input
             type="file"
-            multiple
+            name="productImage"
             onChange={handleImageChange}
             className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
-          <div className="flex mt-4 space-x-4">
+          {/* <div className="flex mt-4 space-x-4">
             {productData.images.map((image, index) => (
               <img
                 key={index}
@@ -198,7 +197,7 @@ const AddProduct = () => {
                 className="w-16 h-16 object-cover rounded-lg border border-gray-200"
               />
             ))}
-          </div>
+          </div> */}
         </div>
 
         {/* Submit Button */}

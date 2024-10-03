@@ -15,7 +15,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/user/logout`,
+        `http://localhost:9000/api/user/logout`,
         {},
         { withCredentials: true }
       );
@@ -184,7 +184,7 @@ const Navbar = () => {
         <nav className="bg-gray-800 p-4 text-white">
           <div className=" container mx-auto flex justify-start space-x-8">
             <Link
-              to="/admin/add-product"
+              to="/create-product"
               className="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-md transition"
             >
               Add Product

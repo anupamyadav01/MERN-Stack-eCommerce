@@ -1,9 +1,7 @@
 import jwt from "jsonwebtoken";
 import { UserModel } from "../model/userModel.js";
 
-const loginMiddleware = async (req, res, next) => {
-  // console.log("login middleware start");
-
+export const getUserDetails = async (req, res, next) => {
   try {
     const token = req?.headers?.cookie?.split("=")[1];
     if (!token) {
@@ -22,11 +20,12 @@ const loginMiddleware = async (req, res, next) => {
       });
     } else {
       req.user = user;
+      console.log("Get User Details Executed");
       next();
     }
   } catch (error) {
-    console.log("errror from islogged in", error);
+    console.log("Error In GetUserDetails", error);
   }
 };
 
-export default loginMiddleware;
+export default getUserDetails;
