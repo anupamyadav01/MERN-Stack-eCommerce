@@ -4,7 +4,10 @@ import { roleCheckMiddleware } from "../middlewares/roleCheckMiddleware.js";
 import { uploadProductImage } from "../services/multerConfig.js";
 import { uploadToCloudniary } from "../services/cloudniaryUpload.js";
 import getUserDetails from "../middlewares/getUserDetailsM.js";
-import { addReview } from "../controller/reviewController.js";
+import {
+  addReview,
+  getReviewsByProductId,
+} from "../controller/reviewController.js";
 import { validateReview } from "../middlewares/validateReviewMiddleware.js";
 
 const ProductRouter = express.Router();
@@ -21,5 +24,7 @@ ProductRouter.post(
 ProductRouter.get("/get-products", showProducts);
 
 ProductRouter.post("/review/:productId", validateReview, addReview);
+
+ProductRouter.get("/review/:productId", getReviewsByProductId);
 
 export default ProductRouter;

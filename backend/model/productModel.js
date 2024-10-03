@@ -53,7 +53,7 @@ const productSchema = new mongoose.Schema(
     },
     addedBy: {
       type: mongoose.Types.ObjectId,
-      ref: "User",
+      ref: "user",
       required: true,
     },
   },
@@ -62,4 +62,4 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-export const ProductModel = mongoose.model("products", productSchema);
+export const ProductModel = mongoose.model("product", productSchema);

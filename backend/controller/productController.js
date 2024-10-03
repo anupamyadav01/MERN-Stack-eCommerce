@@ -86,7 +86,7 @@ export const showProducts = async (req, res) => {
     if (req.query.title) {
       query.title = { $regex: req.query.title, $options: "i" }; // here i stands for case insensitive means it will ignore the case of the letters
     }
-    console.log(query);
+    // console.log(query);
 
     const products = await ProductModel.find(query).sort(sortArgs);
     return res.status(200).json({

@@ -22,3 +22,26 @@ export const addReview = async (req, res) => {
     });
   }
 };
+
+export const getReviewsByProductId = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const reviews = await reviewModel
+      .find({ product: productId })
+      .populate("user")
+      .populate("product");
+    if (!reviews) {
+      console.log("no reviews found");
+    }
+    return res.status(200).send({
+      success: true,
+      reviews: reviews,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Something went wrong in Get Reviews Controller",
+    });
+  }
+};
