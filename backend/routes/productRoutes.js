@@ -1,5 +1,9 @@
 import express from "express";
-import { addProduct, showProducts } from "../controller/productController.js";
+import {
+  addProduct,
+  addToWishlist,
+  showProducts,
+} from "../controller/productController.js";
 import { roleCheckMiddleware } from "../middlewares/roleCheckMiddleware.js";
 import { uploadProductImage } from "../services/multerConfig.js";
 import { uploadToCloudniary } from "../services/cloudniaryUpload.js";
@@ -26,5 +30,7 @@ ProductRouter.get("/get-products", showProducts);
 ProductRouter.post("/review/:productId", validateReview, addReview);
 
 ProductRouter.get("/review/:productId", getReviewsByProductId);
+
+ProductRouter.post("/addToWishlist/:productId", getUserDetails, addToWishlist);
 
 export default ProductRouter;

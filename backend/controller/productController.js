@@ -1,4 +1,5 @@
 import { ProductModel } from "../model/productModel.js";
+import { UserModel } from "../model/userModel.js";
 export const addProduct = async (req, res) => {
   try {
     const {
@@ -96,6 +97,48 @@ export const showProducts = async (req, res) => {
     });
   } catch (error) {
     console.log("Something went wrong", error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong, please try again.",
+    });
+  }
+};
+
+export const addToWishlist = async (req, res) => {
+  let updatedUser;
+  try {
+    const { productId } = req.params;
+    const user = req.user;
+    console.log("user data from database", user);
+    const existingProduct = user.wishlist.find((ids) => ids === productId);
+    if (!existingProduct) {
+      updatedUser = await UserModel.findByIdAndUpdate(
+        user._,
+        {
+          $push: { wishlist: productId },
+        },
+        {
+          new: true,
+        }
+      );
+    } else {
+      updatedUser = await UserModel.findByIdAndDelete(
+        user._id,
+        {
+          $pull: { wishlist: productId },
+        },
+        {
+          new: true,
+        }
+      );
+    }
+    return res.send({
+      success: true,
+      message: "Product added to wishlist",
+      updatedUser: updatedUser,
+    });
+  } catch (error) {
+    console.log("Error Occured in Add to wishlist", error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong, please try again.",
