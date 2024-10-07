@@ -1,16 +1,23 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logoLight } from "../../assets/images";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { updateLoginState } from "../../redux/slices/userSlice";
 
 const SignIn = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errEmail, setErrEmail] = useState("");
   const [errPassword, setErrPassword] = useState("");
 
   const [successMsg, setSuccessMsg] = useState("");
+
+  const navigate = useNavigate();
   const handleEmail = (e) => {
     setEmail(e.target.value);
     setErrEmail("");
@@ -19,17 +26,52 @@ const SignIn = () => {
     setPassword(e.target.value);
     setErrPassword("");
   };
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
     if (!email) {
       setErrEmail("Enter your email");
     }
-
     if (!password) {
       setErrPassword("Create a password");
     }
     if (email && password) {
+      try {
+        const response = await axios.post(
+          `http://localhost:9000/api/user/login`,
+          {
+            email,
+            password,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        console.log(response);
+
+        if (response.status === 200) {
+          dispatch(updateLoginState(true));
+          console.log("User logged in successfully.");
+          toast.success("User LoggedIn Successfully", {
+            position: "top-right",
+          });
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        }
+      } catch (error) {
+        if (error?.response?.data?.message) {
+          toast.error(error?.response?.data?.message, {
+            position: "top-right",
+          });
+        } else {
+          toast.error("Something went wrong. Please try again.", {
+            position: "top-right",
+          });
+        }
+
+        console.log("User login failed -->", error);
+      }
       setSuccessMsg(
         `Hello dear, Thank you for your attempt. We are processing to validate your access. Till then stay connected and additional assistance will be sent to you by your mail at ${email}`
       );

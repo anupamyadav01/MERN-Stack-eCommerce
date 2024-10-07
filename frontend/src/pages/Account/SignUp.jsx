@@ -1,8 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logoLight } from "../../assets/images";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const SignUp = () => {
   const [clientName, setClientName] = useState("");
@@ -18,6 +20,8 @@ const SignUp = () => {
   const [errPassword, setErrPassword] = useState("");
   const [errAddress, setErrAddress] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+
+  const navigate = useNavigate();
 
   const handleName = (e) => {
     setClientName(e.target.value);
@@ -45,7 +49,7 @@ const SignUp = () => {
       .match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
   };
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     if (checked) {
       if (!clientName) {
@@ -80,19 +84,51 @@ const SignUp = () => {
         password.length >= 6 &&
         address
       ) {
-        setSuccessMsg(
-          `Hello dear ${clientName}, Welcome you to OREBI Admin panel. We received your Sign up request. We are processing to validate your access. Till then stay connected and additional assistance will be sent to you by your mail at ${email}`
-        );
-        setClientName("");
-        setEmail("");
-        setPhone("");
-        setPassword("");
-        setAddress("");
+        try {
+          const response = await axios.post(
+            `http://localhost:9000/api/user/register`,
+            {
+              name: clientName,
+              email,
+              password,
+            },
+            {
+              withCredentials: true,
+            }
+          );
+          if (response.status === 201) {
+            console.log("User registered successfully");
+            setSuccessMsg(
+              `Hello dear ${clientName}, Welcome you to OREBI Admin panel.Your account has been registered successfully. `
+            );
+            toast.success("User registered successfully", {
+              position: "top-right",
+              style: {
+                background: "#333",
+                color: "#fff",
+              },
+            });
+            setTimeout(() => {
+              navigate("/signin");
+            }, 2000);
+          }
+        } catch (error) {
+          toast.error(error.response.data.message, {
+            position: "top-right",
+          });
+        }
+
+        // setClientName("");
+        // setEmail("");
+        // setPhone("");
+        // setPassword("");
+        // setAddress("");
       }
     }
   };
   return (
     <div className="h-screen flex items-center justify-start">
+      <Toaster />
       <div className="w-1/2 flex h-full text-white bg-[#262625]">
         <div className="w-[450px] h-full bg-primeColor px-10 flex flex-col gap-6 justify-center">
           <Link to="/">
@@ -162,21 +198,23 @@ const SignUp = () => {
 
       <div className="w-full lgl:w-[500px] h-full flex flex-col justify-center">
         {successMsg ? (
-          <div className="w-[500px]">
-            <p className="w-full px-4 py-10 text-green-500 font-medium font-titleFont">
-              {successMsg}
-            </p>
-            <Link to="/signin">
-              <button
-                className="w-full h-10 bg-primeColor rounded-md text-gray-200 text-base font-titleFont font-semibold 
+          <div className="w-full flex justify-center items-center">
+            <div className="w-[40%]">
+              <p className=" py-10 text-green-500 font-medium font-titleFont">
+                {successMsg}
+              </p>
+              <Link to="/signin">
+                <button
+                  className="w-full h-10 bg-primeColor rounded-md text-gray-200 text-base bg-[#262625] font-semibold 
             tracking-wide hover:bg-black hover:text-white duration-300"
-              >
-                Sign in
-              </button>
-            </Link>
+                >
+                  Sign in
+                </button>
+              </Link>
+            </div>
           </div>
         ) : (
-          <form className="border border-red-500 w-full lgl:w-[500px] h-screen flex items-center justify-center">
+          <form className="w-full lgl:w-[500px] h-screen flex items-center justify-center">
             <div className="px-6 py-4 flex flex-col justify-start">
               <h1 className="underline underline-offset-4 decoration-[1px] font-bold text-4xl mdl:text-3xl mb-4">
                 Create your account

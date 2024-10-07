@@ -121,6 +121,7 @@ export const checkLoggedIn = async (req, res) => {
     return res.status(200).json({
       sucess: true,
       role: user.role,
+      user,
     });
   } catch (error) {
     console.log("Error from Checklogged In");
