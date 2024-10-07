@@ -11,8 +11,8 @@ const Login = () => {
   const { setIsLoggedIn } = useContext(LoginContext);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
       const response = await axios.post(
         `http://localhost:9000/api/user/login`,
         {

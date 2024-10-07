@@ -10,8 +10,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
       const response = await axios.post(
         `http://localhost:9000/api/user/register`,
         {
