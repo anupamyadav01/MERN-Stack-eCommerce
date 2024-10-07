@@ -1,17 +1,26 @@
-/* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from "react";
 import axios from "axios";
 import ProductCard from "./ProductCard";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCartItems } from "../../../redux/slices/cartSlice";
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.cart.cartItems);
+
   useEffect(() => {
     const getProductsData = async () => {
-      const response = await axios.get(
-        `http://localhost:9000/api/product/get-products`
-      );
-      console.log(response?.data?.products);
-      setProducts(response?.data?.products);
+      try {
+        const response = await axios.get(
+          `http://localhost:9000/api/product/get-products`
+        );
+        if (response.status === 200) {
+          dispatch(updateCartItems(response?.data?.products));
+        }
+      } catch (error) {
+        console.log(error);
+      }
     };
     getProductsData();
   }, []);
