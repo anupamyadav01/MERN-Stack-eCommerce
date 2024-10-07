@@ -1,8 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import Home from "../components/Home";
-import Register from "../components/Register";
-import Login from "../components/Login";
 import ForgotPassword from "../components/ForgetPassword";
 import AddProduct from "../pages/Dashboard/Products/AddProduct";
 import PrivateRoute from "../components/PrivateRoute";
@@ -14,15 +11,23 @@ import AllProducts from "../pages/Dashboard/Products/AllProducts";
 import AllUsers from "../pages/Dashboard/Products/AllUsers";
 import { useContext } from "react";
 import { LoginContext } from "../App";
+import Header from "../components/Home/Header/Header";
+import HeaderBottom from "../components/Home/Header/HeaderBotton";
+import Footer from "../components/Footer/Footer";
+import FooterBottom from "../components/Footer/FooterBottom";
+import SignUp from "../pages/Account/SignUp";
+import SignIn from "../pages/Account/SignIn";
 const Router = () => {
   const { isLoggedIn, isAdmin } = useContext(LoginContext);
   return (
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
+      <Header />
+      <HeaderBottom />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<SignUp />} />
+        <Route path="/login" element={<SignIn />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/products" element={<Products />} />
 
@@ -89,6 +94,9 @@ const Router = () => {
         {/* Add a route for unauthorized access */}
         <Route path="/unauthorized" element={<h1>Access Denied</h1>} />
       </Routes>
+
+      <Footer />
+      <FooterBottom />
     </BrowserRouter>
   );
 };

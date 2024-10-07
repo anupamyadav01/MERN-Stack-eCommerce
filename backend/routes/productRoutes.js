@@ -2,6 +2,7 @@ import express from "express";
 import {
   addProduct,
   addToWishlist,
+  rating,
   showProducts,
 } from "../controller/productController.js";
 import { roleCheckMiddleware } from "../middlewares/roleCheckMiddleware.js";
@@ -32,5 +33,7 @@ ProductRouter.post("/review/:productId", validateReview, addReview);
 ProductRouter.get("/review/:productId", getReviewsByProductId);
 
 ProductRouter.post("/addToWishlist/:productId", getUserDetails, addToWishlist);
+
+ProductRouter.post("/rating/:productId", getUserDetails, rating);
 
 export default ProductRouter;

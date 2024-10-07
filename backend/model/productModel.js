@@ -22,11 +22,6 @@ const productSchema = new mongoose.Schema(
       // required: true,
       default: 0,
     },
-    rating: {
-      type: Number,
-      // required: true,
-      default: 0,
-    },
     stock: {
       type: Number,
       // required: true,
@@ -51,6 +46,16 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    ratings: [
+      {
+        star: Number,
+        comment: String,
+        postedBy: { type: mongoose.Types.ObjectId, ref: "user" },
+      },
+    ],
+    totalRating: {
+      type: Number,
+    },
     addedBy: {
       type: mongoose.Types.ObjectId,
       ref: "user",
@@ -62,4 +67,4 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-export const ProductModel = mongoose.model("product", productSchema);
+export const ProductModel = new mongoose.model("product", productSchema);

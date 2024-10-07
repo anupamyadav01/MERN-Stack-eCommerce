@@ -37,11 +37,30 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-white dark:bg-gray-800 shadow-lg sticky top-0 w-full z-10">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <nav className="bg-white shadow-lg sticky top-0 w-full z-10">
+        {/* Upper navbar */}
+        <div className="px-4 py-4 flex justify-between items-center border">
           {/* Logo */}
-          <div className="text-2xl font-bold text-gray-800 dark:text-white">
-            <Link to="/">MyLogo</Link>
+          <div className="text-2xl font-bold  dark:text-white ">
+            <Link to="/">
+              <img
+                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
+                alt="shopo"
+              />
+            </Link>
+          </div>
+        </div>
+
+        {/* Navbar with links  */}
+        <div className="px-4 py-4 flex justify-between items-center border">
+          {/* Logo */}
+          <div className="text-2xl font-bold text-gray-800 dark:text-white ">
+            <Link to="/">
+              <img
+                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
+                alt="shopo"
+              />
+            </Link>
           </div>
 
           {/* Menu for larger screens */}
@@ -133,50 +152,6 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-4 py-2 space-y-2">
-              <Link
-                to="/"
-                className="block text-gray-700 dark:text-gray-300 hover:text-blue-500"
-              >
-                Home
-              </Link>
-              <Link
-                to="/products"
-                className="block text-gray-700 dark:text-gray-300 hover:text-blue-500"
-              >
-                Products
-              </Link>
-              <Link
-                to="/services"
-                className="block text-gray-700 dark:text-gray-300 hover:text-blue-500"
-              >
-                Services
-              </Link>
-              <Link
-                to="/contact"
-                className="block text-gray-700 dark:text-gray-300 hover:text-blue-500"
-              >
-                Contact
-              </Link>
-              <Link
-                to="/register"
-                className="block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
-              >
-                Register
-              </Link>
-              <Link
-                to="/login"
-                className="block bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
-              >
-                Login
-              </Link>
-            </div>
-          </div>
-        )}
       </nav>
 
       {/* admin navbar  */}
