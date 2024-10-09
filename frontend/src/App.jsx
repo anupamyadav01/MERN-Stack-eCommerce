@@ -15,13 +15,7 @@ import FooterBottom from "./components/Footer/FooterBottom";
 import SignUp from "./pages/Account/SignUp";
 import SignIn from "./pages/Account/SignIn";
 import ForgotPassword from "./components/ForgetPassword";
-import Products from "./pages/Dashboard/Products/Products";
-import AddProduct from "./pages/Dashboard/Products/AddProduct";
-import EditProduct from "./pages/Dashboard/Products/EditProduct";
-import RemoveProduct from "./pages/Dashboard/Products/RemoveProduct";
-import AllProducts from "./pages/Dashboard/Products/AllProducts";
 import Home from "./pages/Home/Hero.jsx";
-import AllUsers from "./pages/Dashboard/Products/AllUsers";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateAdminState,
@@ -32,6 +26,12 @@ import Contact from "./pages/Contact/Contact.jsx";
 import About from "./pages/About/About.jsx";
 import FAQPage from "./pages/FAQPage/index.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
+import Products from "./pages/Products/index.jsx";
+import AdminDashboardPage from "./pages/Admin/AdminDashboardPage.jsx";
+import AdminDashboardOrders from "./pages/Admin/AdminDashboardOrders.jsx";
+import AdminDashboardSellers from "./pages/Admin/AdminDashboardSellers.jsx";
+import AdminDashboardUsers from "./pages/Admin/AdminDashboardUsers.jsx";
+import AdminDashboardProducts from "./pages/Admin/AdminDashboardProducts.jsx";
 
 export const LoginContext = createContext();
 
@@ -53,6 +53,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<Layout />}>
+        {/* Navbar Links Route */}
         <Route index element={<Home />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
@@ -60,15 +61,19 @@ const router = createBrowserRouter(
         <Route path="/FAQs" element={<FAQPage />} />
 
         <Route path="products" element={<Products />} />
-        <Route path="create-product" element={<AddProduct />} />
-        <Route path="products/:productId" element={<EditProduct />} />
-        <Route path="remove-product/:productId" element={<RemoveProduct />} />
-        <Route path="all-products" element={<AllProducts />} />
-        <Route path="all-users" element={<AllUsers />} />
       </Route>
+
+      {/* User Authentication Route */}
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="forgot-password" element={<ForgotPassword />} />
+
+      {/* Admin Routes  */}
+      <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+      <Route path="/admin-orders" element={<AdminDashboardOrders />} />
+      <Route path="/admin-sellers" element={<AdminDashboardSellers />} />
+      <Route path="/admin-users" element={<AdminDashboardUsers />} />
+      <Route path="admin-products" element={<AdminDashboardProducts />} />
     </Route>
   )
 );
@@ -98,7 +103,6 @@ const App = () => {
           }
         }
       } catch (error) {
-        // setIsLoggedIn(false);
         console.log("Error From Check User Role: ", error);
       }
     };
