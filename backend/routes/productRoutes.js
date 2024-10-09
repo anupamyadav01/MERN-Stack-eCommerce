@@ -3,6 +3,7 @@ import {
   addProduct,
   addToWishlist,
   deleteProduct,
+  getProductDetailsById,
   rating,
   showProducts,
 } from "../controller/productController.js";
@@ -36,11 +37,13 @@ ProductRouter.delete(
 
 ProductRouter.get("/get-all-products", showProducts);
 
+ProductRouter.get("/:productId", getProductDetailsById);
+
 ProductRouter.post("/review/:productId", validateReview, addReview);
 
 ProductRouter.get("/review/:productId", getReviewsByProductId);
 
-ProductRouter.post("/addToWishlist/:productId", getUserDetails, addToWishlist);
+ProductRouter.get("/addToWishlist/:productId", getUserDetails, addToWishlist);
 
 ProductRouter.post("/rating/:productId", getUserDetails, rating);
 

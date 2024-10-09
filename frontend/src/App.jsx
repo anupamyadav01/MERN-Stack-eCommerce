@@ -32,6 +32,7 @@ import AdminDashboardOrders from "./pages/Admin/AdminDashboardOrders.jsx";
 import AdminDashboardSellers from "./pages/Admin/AdminDashboardSellers.jsx";
 import AdminDashboardUsers from "./pages/Admin/AdminDashboardUsers.jsx";
 import AdminDashboardProducts from "./pages/Admin/AdminDashboardProducts.jsx";
+import ProductDetails from "./components/Products/ProductDetails.jsx";
 
 export const LoginContext = createContext();
 
@@ -60,7 +61,8 @@ const router = createBrowserRouter(
         <Route path="/about" element={<About />} />
         <Route path="/FAQs" element={<FAQPage />} />
 
-        <Route path="products" element={<Products />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/product/:productId" element={<ProductDetails />} />
       </Route>
 
       {/* User Authentication Route */}

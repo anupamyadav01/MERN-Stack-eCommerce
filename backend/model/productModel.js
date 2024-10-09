@@ -53,7 +53,7 @@ const productSchema = new mongoose.Schema(
         postedBy: { type: mongoose.Types.ObjectId, ref: "user" },
       },
     ],
-    totalRating: {
+    averageRating: {
       type: Number,
     },
     addedBy: {

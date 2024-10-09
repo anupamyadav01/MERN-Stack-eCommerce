@@ -1,12 +1,18 @@
 /* eslint-disable react/prop-types */
 import ReactStars from "react-rating-stars-component";
 import { RiHeart3Fill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
-  console.log(product);
-
+  const navigate = useNavigate();
+  const showProductDetails = (productId) => {
+    navigate(`/product/${productId}`);
+  };
   return (
-    <div className="max-w-sm bg-[#F5F7FA] rounded-2xl shadow-md p-6 relative">
+    <div
+      className="max-w-sm bg-[#F5F7FA] rounded-2xl shadow-md p-6 relative cursor-pointer"
+      onClick={() => showProductDetails(product?._id)}
+    >
       {/* Product ID */}
       <div className="absolute top-2 right-4 text-xs text-gray-400 border">
         {product?._id}
