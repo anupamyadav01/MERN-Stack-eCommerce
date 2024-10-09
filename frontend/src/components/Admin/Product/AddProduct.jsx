@@ -35,8 +35,6 @@ const AddProduct = ({ setAddProductVisible }) => {
       formData.append(key, productData[key]);
     });
 
-    console.log(productData);
-
     try {
       const response = await axios.post(
         `http://localhost:9000/api/product/create-product`,

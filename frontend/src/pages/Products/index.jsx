@@ -1,23 +1,21 @@
-import { useDispatch, useSelector } from "react-redux";
 import ProductGrid from "../../components/Products/ProductGrid";
 import ProductNav from "../../components/Products/ProductNav";
 import Sidebar from "../../components/Products/Sidebar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { updateCartItems } from "../../redux/slices/cartSlice";
 
 const Products = () => {
-  const dispatch = useDispatch();
-  const products = useSelector((state) => state.cart.cartItems);
-
+  const [products, setProducts] = useState([]);
+  // const products = useSelector((state) => state.products.Products);
   useEffect(() => {
     const getProductsData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/product/get-products`
+          `http://localhost:9000/api/product/get-all-products`
         );
+
         if (response.status === 200) {
-          dispatch(updateCartItems(response?.data?.products));
+          setProducts(response?.data?.products);
         }
       } catch (error) {
         console.log(error);
@@ -25,7 +23,6 @@ const Products = () => {
     };
     getProductsData();
   }, []);
-  console.log(products);
 
   return (
     <div className="bg-gray-100 min-h-screen">

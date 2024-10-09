@@ -2,6 +2,7 @@ import express from "express";
 import {
   addProduct,
   addToWishlist,
+  deleteProduct,
   rating,
   showProducts,
 } from "../controller/productController.js";
@@ -26,7 +27,14 @@ ProductRouter.post(
   addProduct
 );
 
-ProductRouter.get("/get-products", showProducts);
+ProductRouter.delete(
+  "/delete/:productId",
+  getUserDetails,
+  roleCheckMiddleware,
+  deleteProduct
+);
+
+ProductRouter.get("/get-all-products", showProducts);
 
 ProductRouter.post("/review/:productId", validateReview, addReview);
 

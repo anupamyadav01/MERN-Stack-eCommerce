@@ -1,30 +1,47 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai"; // Import the delete icon
 import { FaEye } from "react-icons/fa";
+import { updateProductsArray } from "../../../redux/slices/productSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const AllProducts = () => {
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products.products);
+
   useEffect(() => {
-    const getAllProducts = async () => {
+    const getProductsData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:9000/api/product/get-products"
+          `http://localhost:9000/api/product/get-all-products`
         );
-        console.log("products", response);
-        setProducts(response.data.products);
+
+        dispatch(updateProductsArray(response?.data?.products));
       } catch (error) {
         console.log(error);
       }
     };
-    getAllProducts();
-  }, []);
-  const [products, setProducts] = useState([]);
+    getProductsData();
+  }, [dispatch]);
 
-  const onDelete = (id) => {
-    setProducts(products.filter((product) => product.id !== id));
+  const onProductDelete = async (productId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:9000/api/product/delete/${productId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const onEdit = () => {};
+  const viewProductDetails = (productId) => {
+    console.log(productId);
+  };
 
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden shadow-md">
@@ -64,14 +81,14 @@ const AllProducts = () => {
                 </td>
                 <td className="border border-gray-300 py-3 px-4 text-center flex gap-4 justify-center">
                   <button
-                    onClick={() => onDelete(product.id)}
+                    onClick={() => onProductDelete(product._id)}
                     className="flex items-center bg-red-500 text-white font-semibold py-1 px-3 rounded-lg hover:bg-red-600 transition duration-150 ease-in-out"
                   >
                     <AiOutlineDelete className="mr-1 text-xl" />
                     Delete
                   </button>
                   <button
-                    onClick={() => onEdit(product.id)} // Replace onEdit with your edit function
+                    onClick={() => viewProductDetails(product._id)} // Replace onEdit with your edit function
                     className="flex items-center bg-yellow-500 text-white font-semibold py-1 px-3 rounded-lg hover:bg-yellow-600 transition duration-150 ease-in-out"
                   >
                     <FaEye className="mr-1 text-xl" />

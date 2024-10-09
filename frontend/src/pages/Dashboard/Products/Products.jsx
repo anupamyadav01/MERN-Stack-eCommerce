@@ -3,20 +3,20 @@ import { useEffect } from "react";
 import axios from "axios";
 import ProductCard from "./ProductCard";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCartItems } from "../../../redux/slices/cartSlice";
+import { updateProductsArray } from "../../../redux/slices/productSlice";
 
 const Products = () => {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.cart.cartItems);
+  const products = useSelector((state) => state.products.products);
 
   useEffect(() => {
     const getProductsData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/product/get-products`
+          `http://localhost:9000/api/product/get-all-products`
         );
         if (response.status === 200) {
-          dispatch(updateCartItems(response?.data?.products));
+          dispatch(updateProductsArray(response?.data?.products));
         }
       } catch (error) {
         console.log(error);

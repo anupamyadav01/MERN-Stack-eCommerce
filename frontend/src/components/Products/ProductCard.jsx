@@ -3,19 +3,21 @@ import ReactStars from "react-rating-stars-component";
 import { RiHeart3Fill } from "react-icons/ri";
 
 const ProductCard = ({ product }) => {
+  console.log(product);
+
   return (
     <div className="max-w-sm bg-[#F5F7FA] rounded-2xl shadow-md p-6 relative">
       {/* Product ID */}
-      <div className="absolute top-2 right-4 text-xs text-gray-400">
-        id: 12345689
+      <div className="absolute top-2 right-4 text-xs text-gray-400 border">
+        {product?._id}
       </div>
 
       {/* Product Image */}
       <div className="flex justify-center">
         <img
           className="w-48 h-64 object-cover"
-          src={product.image}
-          alt={product.title}
+          src={product?.productImage}
+          alt={product?.title}
         />
       </div>
 
@@ -27,7 +29,7 @@ const ProductCard = ({ product }) => {
 
       {/* Product Title */}
       <h2 className="text-lg font-medium text-gray-900 mt-4">
-        Apple iPhone 15 Pro
+        {product?.title}
       </h2>
 
       {/* Rating and Reviews */}
@@ -39,20 +41,22 @@ const ProductCard = ({ product }) => {
           activeColor="#404040"
           edit={false}
         />
-        <span className="ml-2 text-gray-600 text-sm">(97)</span>
+        <span className="ml-2 text-gray-600 text-sm">
+          ({product?.ratings?.length})
+        </span>
       </div>
 
       {/* Price and Discount */}
       <div className="flex items-center justify-between mt-4">
         <div>
           <div className="text-base text-gray-400 flex gap-1">
-            <span className="line-through">$999.00</span>
+            <span className="line-through">${product?.price - 100}</span>
             <span className="text-[10px] text-gray-900 font-medium bg-blue-100 px-2 rounded-sm">
               -10%
             </span>
           </div>
           <div className="text-2xl font-bold text-gray-900 tracking-wider border">
-            $899.00
+            ${product?.price}
           </div>
         </div>
         <div>

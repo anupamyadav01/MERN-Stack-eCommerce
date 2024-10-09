@@ -95,7 +95,7 @@ const App = () => {
 
         if (loginResponse?.status === 200) {
           dispatch(updateLoginState(true));
-          console.log(loginResponse.data.user);
+          // console.log(loginResponse.data.user);
           dispatch(updateUser(loginResponse.data.user));
 
           if (loginResponse.data.role === "admin") {
