@@ -4,26 +4,26 @@ import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { FaSearch, FaUser, FaCaretDown, FaShoppingCart } from "react-icons/fa";
 import Flex from "../../designLayouts/Flex";
 import { Link, useNavigate } from "react-router-dom";
-// import { useSelector } from "react-redux";
 import { paginationItems } from "../../../constants";
 import { useSelector } from "react-redux";
 
 const HeaderBottom = () => {
   const userDetails = useSelector((state) => state.user.userInfo);
-  //   const products = useSelector((state) => state.orebiReducer.products);
   const [show, setShow] = useState(false);
   const [showUser, setShowUser] = useState(false);
   const navigate = useNavigate();
   const ref = useRef();
-  useEffect(() => {
-    document.body.addEventListener("click", (e) => {
-      if (ref.current.contains(e.target)) {
-        setShow(true);
-      } else {
-        setShow(false);
-      }
-    });
-  }, [show, ref]);
+  // useEffect(() => {
+  //   document.body.addEventListener("click", (e) => {
+  //     console.log(ref.current);
+
+  //     if (ref?.current?.contains(e.target)) {
+  //       setShow(true);
+  //     } else {
+  //       setShow(false);
+  //     }
+  //   });
+  // }, [show, ref]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
