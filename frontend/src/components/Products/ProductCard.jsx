@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import ReactStars from "react-rating-stars-component";
 import { RiHeart3Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import StarRatings from "react-star-ratings";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
@@ -40,12 +40,14 @@ const ProductCard = ({ product }) => {
 
       {/* Rating and Reviews */}
       <div className="flex items-center mt-2">
-        <ReactStars
-          count={5}
-          value={5}
-          size={25}
-          activeColor="#404040"
-          edit={false}
+        <StarRatings
+          rating={product?.rating}
+          starRatedColor="gold"
+          numberOfStars={5}
+          name="rating"
+          starDimension="20px"
+          starSpacing="1px"
+          isSelectable={false}
         />
         <span className="ml-2 text-gray-600 text-sm">
           ({product?.ratings?.length})

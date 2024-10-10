@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { ProductModel } from "../model/productModel.js";
 import { UserModel } from "../model/userModel.js";
 export const addProduct = async (req, res) => {
@@ -42,7 +43,13 @@ export const addProduct = async (req, res) => {
 export const getProductDetailsById = async (req, res) => {
   try {
     const { productId } = req.params;
-    const product = await ProductModel.findById(productId);
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.send({
+        message: "not valid getproduct detaisl",
+      });
+    }
+    const newProductId = await mongoose.Types.ObjectId(productId);
+    const product = await ProductModel.findById(newProductId);
     if (!product) {
       return res.status(404).json({
         success: false,
@@ -101,41 +108,42 @@ export const checkRole = async (req, res) => {
 };
 
 export const showProducts = async (req, res) => {
+  console.log(req.query);
+
   try {
     let query = {};
     let sortArgs = {};
-    if (req.query.brand) {
-      query.brand = req.query.brand;
+    if (req.query.sortbyprice) {
+      const { min, max } = req.query.sortbyprice;
+      const minPrice = parseInt(min, 10);
+      const maxPrice = parseInt(max, 10);
+      query.price = { $gte: minPrice, $lte: maxPrice };
     }
-    if (req.query.category) {
-      query.category = req.query.category;
+    if (req.query.sortbyrating) {
+      const rating = parseInt(req.query.sortbyrating, 10);
+      query.rating = { $gte: rating };
     }
-    if (req.query.sortBy && req.query.sortOrder) {
-      const sortBy = req.query.sortBy;
-      const sortOrder = req.query.sortOrder.toLowerCase() === "dec" ? -1 : 1;
+    if (req.query.brands) {
+      const brands = Array.isArray(req.query.brands)
+        ? req.query.brands
+        : [req.query.brands];
+      query.brand = { $in: brands };
+    }
+    if (req.query.types) {
+      const types = Array.isArray(req.query.types)
+        ? req.query.types
+        : [req.query.types];
+      query.category = { $in: types };
+    }
+    if (req.query.discount) {
+      const discountNum = parseInt(req.query.discount, 10);
+      query.discountPercentage = { $gte: discountNum };
+    }
 
-      sortArgs[sortBy] = sortOrder;
-    }
-    const operators = {
-      "=": "$eq",
-      "<": "$lt",
-      ">": "$gt",
-      "<=": "$lte",
-      ">=": "$gte",
-    };
-
-    const operatorsArray = Object.keys(operators);
-    operatorsArray.forEach((operator) => {
-      if (req?.query?.price?.startsWith(operator)) {
-        query.price = {
-          [operators[operator]]: req.query.price.slice(operator.length),
-        };
-      }
-    });
     if (req.query.title) {
       query.title = { $regex: req.query.title, $options: "i" }; // here i stands for case insensitive means it will ignore the case of the letters
     }
-    // console.log(query);
+    console.log(query);
 
     const products = await ProductModel.find(query).sort(sortArgs);
     return res.status(200).json({

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { AiOutlineDelete } from "react-icons/ai"; // Import the delete icon
+import { AiOutlineDelete } from "react-icons/ai";
 import { FaEye } from "react-icons/fa";
 import { updateProductsArray } from "../../../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";

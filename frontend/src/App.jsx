@@ -26,7 +26,7 @@ import Contact from "./pages/Contact/Contact.jsx";
 import About from "./pages/About/About.jsx";
 import FAQPage from "./pages/FAQPage/index.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
-import Products from "./pages/Products/index.jsx";
+import ProductsPage from "./pages/Products/ProductsPage.jsx";
 import AdminDashboardPage from "./pages/Admin/AdminDashboardPage.jsx";
 import AdminDashboardOrders from "./pages/Admin/AdminDashboardOrders.jsx";
 import AdminDashboardSellers from "./pages/Admin/AdminDashboardSellers.jsx";
@@ -61,7 +61,7 @@ const router = createBrowserRouter(
         <Route path="/about" element={<About />} />
         <Route path="/FAQs" element={<FAQPage />} />
 
-        <Route path="/products" element={<Products />} />
+        <Route path="/products" element={<ProductsPage />} />
         <Route path="/product/:productId" element={<ProductDetails />} />
       </Route>
 
@@ -82,8 +82,8 @@ const router = createBrowserRouter(
 const App = () => {
   const dispatch = useDispatch();
   const isUserLoggedIn = useSelector((state) => state.user.isUserLoggedIn);
-  const userDetails = useSelector((state) => state.user.userInfo);
-  const isAdmin = useSelector((state) => state.user.isAdmin);
+  // const userDetails = useSelector((state) => state.user.userInfo);
+  // const isAdmin = useSelector((state) => state.user.isAdmin);
   // Combined hook to check both login status and user role
   useEffect(() => {
     const checkUserStatus = async () => {
@@ -111,9 +111,9 @@ const App = () => {
 
     checkUserStatus();
   }, [isUserLoggedIn]);
-  console.log(
-    `User Details: ${userDetails}, isAdmin: ${isAdmin} , isUserLoggedIn: ${isUserLoggedIn}`
-  );
+  // console.log(
+  //   `User Details: ${userDetails}, isAdmin: ${isAdmin} , isUserLoggedIn: ${isUserLoggedIn}`
+  // );
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">

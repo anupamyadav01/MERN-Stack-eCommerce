@@ -4,9 +4,17 @@ import Sidebar from "../../components/Products/Sidebar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const Products = () => {
+const ProductsPage = () => {
   const [products, setProducts] = useState([]);
-  // const products = useSelector((state) => state.products.Products);
+  const [sortByValue, setSortByValue] = useState("All");
+
+  const [filterOptions, setFilterOptions] = useState({
+    sortbyprice: null,
+    sortbyrating: null,
+    brands: [],
+    types: [],
+    discount: null,
+  });
   useEffect(() => {
     const getProductsData = async () => {
       try {
@@ -26,13 +34,21 @@ const Products = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <ProductNav />
+      <ProductNav
+        filterOptions={filterOptions}
+        setFilterOptions={setFilterOptions}
+        setSortByValue={setSortByValue}
+        sortByValue={sortByValue}
+      />
       <div className="flex">
-        <Sidebar />
+        <Sidebar
+          filterOptions={filterOptions}
+          setFilterOptions={setFilterOptions}
+        />
         <ProductGrid products={products} />
       </div>
     </div>
   );
 };
 
-export default Products;
+export default ProductsPage;

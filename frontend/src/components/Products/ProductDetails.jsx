@@ -7,9 +7,10 @@ import axios from "axios";
 const ProductDetails = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [reviews, setReviews] = useState(null);
+
   useEffect(() => {
     const getProductDetails = async () => {
+      console.log(productId + " inside products detail");
       try {
         const response = await axios.get(
           `http://localhost:9000/api/product/${productId}`,
@@ -19,8 +20,7 @@ const ProductDetails = () => {
         );
 
         if (response.status === 200) {
-          setProduct(response.data.product);
-          setReviews(response.data);
+          setProduct(response?.data?.product);
         }
       } catch (error) {
         console.log(error);
