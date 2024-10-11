@@ -31,6 +31,6 @@ app.listen(PORT, () => {
 
 // Universal Error Handler
 app.use((error, req, res, next) => {
-  console.log(error);
+  console.log("Error from universal error handler", error);
   res.status(500).send({ message: "Something went wrong" });
 });

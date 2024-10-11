@@ -36,6 +36,8 @@ export const addProduct = async (req, res) => {
       productTitle: product,
     });
   } catch (error) {
+    console.log("Error in Add Product", error);
+
     return res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -61,7 +63,7 @@ export const getProductDetailsById = async (req, res) => {
       product,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error in getProductDetailsById", error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -85,7 +87,7 @@ export const deleteProduct = async (req, res) => {
       message: "Product deleted successfully",
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error in deleteProduct", error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -99,6 +101,8 @@ export const checkRole = async (req, res) => {
     const user = req.user;
     res.send({ sucess: true, role: user.role });
   } catch (error) {
+    console.log("Error in checkRole", error);
+
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -152,7 +156,7 @@ export const showProducts = async (req, res) => {
       products: products,
     });
   } catch (error) {
-    console.log("Something went wrong", error);
+    console.log("Something went wrong in showProducts", error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong, please try again.",

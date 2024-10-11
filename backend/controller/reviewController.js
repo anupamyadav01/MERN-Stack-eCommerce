@@ -16,6 +16,7 @@ export const addReview = async (req, res) => {
       review: review,
     });
   } catch (error) {
+    console.log("Error in addReview", error);
     return res.status(500).send({
       success: false,
       message: "Something went wrong in review Controller",
@@ -38,7 +39,7 @@ export const getReviewsByProductId = async (req, res) => {
       reviews: reviews,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error in getReviewsByProductId", error);
     return res.status(500).send({
       success: false,
       message: "Something went wrong in Get Reviews Controller",

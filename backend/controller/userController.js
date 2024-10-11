@@ -33,7 +33,7 @@ export const register = async (req, res) => {
       .status(201)
       .json({ sucess: true, message: "User created successfully" });
   } catch (error) {
-    console.log("Failed to register user:", error);
+    console.log("Error in Register User", error);
   }
 };
 
@@ -89,7 +89,7 @@ export const login = async (req, res) => {
       .status(200)
       .json({ sucess: true, message: "Login successful", token });
   } catch (error) {
-    console.log(error);
+    console.log("Error in Login", error);
 
     return res
       .status(500)
@@ -108,6 +108,7 @@ export const getUsers = async (req, res) => {
       user: dbData,
     });
   } catch (error) {
+    console.log("Error from Get Users", error);
     return res.status(500).send({
       sucess: false,
       message: "Something went wrong, please try again later.",
@@ -124,7 +125,7 @@ export const checkLoggedIn = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log("Error from Checklogged In");
+    console.log("Error from Checklogged In", error);
 
     return res.status(500).json({
       sucess: false,
@@ -226,7 +227,12 @@ export const verifyOTP = async (req, res) => {
     return res
       .status(200)
       .json({ success: true, message: "OTP verified successfully" });
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error from verify OTP:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Server error, failed to verify OTP" });
+  }
 };
 
 export const resetPassword = async (req, res) => {
@@ -245,7 +251,7 @@ export const resetPassword = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    console.log("Error from reset password:", error);
 
     return res.json({
       message: "errror in reset",
