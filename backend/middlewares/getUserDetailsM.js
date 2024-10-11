@@ -22,7 +22,6 @@ export const getUserDetails = async (req, res, next) => {
       });
     } else {
       req.user = user;
-      console.log("Get User Details Executed");
       next();
     }
   } catch (error) {

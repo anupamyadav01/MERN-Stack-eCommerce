@@ -3,7 +3,6 @@ export const roleCheckMiddleware = async (req, res, next) => {
     const user = req.user;
 
     if (user?.role === "admin") {
-      console.log("Get User Details Executed");
       next();
     } else {
       return res?.status(200).send({

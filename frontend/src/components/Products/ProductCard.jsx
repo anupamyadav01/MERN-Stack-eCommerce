@@ -3,6 +3,7 @@ import { RiHeart3Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
@@ -22,10 +23,19 @@ const ProductCard = ({ product }) => {
       console.log(response);
     } catch (error) {
       console.log(error);
+      if (error.status === 401) {
+        toast.error("Please login to add to cart", {
+          position: "top-right",
+        });
+        setTimeout(() => {
+          navigate("/signin");
+        }, 2000);
+      }
     }
   };
   return (
     <div className="max-w-sm bg-[#F5F7FA] rounded-2xl shadow-md p-6 relative">
+      <Toaster />
       {/* Product ID */}
       <div className="absolute top-2 right-4 text-xs text-gray-400 border">
         {product?._id}
