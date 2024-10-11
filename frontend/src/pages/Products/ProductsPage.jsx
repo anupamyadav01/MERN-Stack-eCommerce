@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import { updateProductsArray } from "../../redux/slices/productSlice";
+import axiosInstance from "../../axiosCongig";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const ProductsPage = () => {
   useEffect(() => {
     const getProductsData = async () => {
       try {
-        const response = await axios.get(`/product/get-all-products`);
+        const response = await axiosInstance.get(`/product/get-all-products`);
 
         if (response.status === 200) {
           setProducts(response?.data?.products);
