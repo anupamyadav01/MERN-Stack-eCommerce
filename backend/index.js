@@ -4,6 +4,7 @@ import connectToMongoDB from "./services/connectToMongoDB.js";
 import userRouter from "./routes/userRoutes.js";
 import cors from "cors";
 import ProductRouter from "./routes/productRoutes.js";
+import { CartRouter } from "./routes/cartRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 9000;
@@ -22,6 +23,7 @@ connectToMongoDB();
 
 app.use("/api/user", userRouter);
 app.use("/api/product", ProductRouter);
+app.use("/api/cart", CartRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

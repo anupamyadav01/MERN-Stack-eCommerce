@@ -172,7 +172,10 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
         Apply Filters
       </button>
 
-      <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md w-full mt-2">
+      <button
+        className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md w-full mt-2"
+        onClick={() => setFilterOptions({})}
+      >
         Reset Filters
       </button>
     </div>

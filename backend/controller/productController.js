@@ -209,48 +209,61 @@ export const rating = async (req, res) => {
   const productId = req.params.productId;
   const { ratingNumber, comment } = req.body;
   const userId = req.user._id;
+  console.log(productId, ratingNumber, comment, userId);
 
   try {
     // find product by id
     const product = await ProductModel.findById(productId);
 
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
     // check wheater user has already rated or not
 
-    const existingRating = product.rating.find((ratingObj) => {
+    const existingRating = product?.ratings?.find((ratingObj) => {
       return ratingObj.postedBy.toString() === userId.toString();
     });
+    console.log(existingRating);
 
     let updatedProduct;
     if (existingRating) {
       updatedProduct = await ProductModel.findOneAndUpdate(
         {
           _id: productId,
-          "rating.postedBy": userId,
+          "ratings.postedBy": userId,
         },
         {
           $set: {
-            "rating.$.commnet": comment,
-            "rating.$.star": ratingNumber,
+            "ratings.$.comment": comment,
+            "ratings.$.star": ratingNumber,
           },
         },
         {
           new: true,
         }
-      );
+      ).populate("ratings.postedBy");
     } else {
+      console.log("else");
+
       updatedProduct = await ProductModel.findByIdAndUpdate(
         productId,
         {
           $push: {
-            star: ratingNumber,
-            comment: comment,
-            postedBy: userId,
+            ratings: {
+              star: ratingNumber,
+              comment: comment,
+              postedBy: userId,
+            },
           },
         },
         {
           new: true,
         }
-      );
+      ).populate("ratings.postedBy");
     }
     res.send(updatedProduct);
   } catch (error) {
@@ -261,66 +274,3 @@ export const rating = async (req, res) => {
     });
   }
 };
-// export async function rating(req, res) {
-//   const productID = req.params.productId;
-//   let { starRating, comment } = req.body;
-//   const userID = req.user._id;
-
-//   // productID = new mongoose.Types.ObjectId(productID);
-
-//   try {
-//     //FIND THE PRODUCT BY ID
-//     const product = await ProductModel.findById(productID);
-
-//     //CHECK IF THE USER HAS ALREADY RATED THE PRODUCT
-//     const alreadyRated = product.ratings.find(
-//       (ratingObj) => ratingObj.postedBy.toString() === userID.toString()
-//     );
-
-//     let updatedProduct;
-
-//     if (alreadyRated) {
-//       //IF ALREADY RATED:
-//       // UPDATE THE RATING
-
-//       updatedProduct = await ProductModel.findOneAndUpdate(
-//         {
-//           _id: productID,
-//           "ratings.postedBy": userID,
-//         },
-//         {
-//           $set: {
-//             "ratings.$.comment": comment,
-//             "ratings.$.star": starRating,
-//           },
-//         },
-//         { new: true }
-//       );
-//     } else {
-//       //IF IT'S A NEW RATING:
-//       // ADD A NEW RATING
-
-//       updatedProduct = await ProductModel.findByIdAndUpdate(
-//         productID,
-//         {
-//           $push: {
-//             ratings: {
-//               star: starRating,
-//               comment: comment,
-//               postedBy: userID,
-//             },
-//           },
-//         },
-//         { new: true }
-//       );
-//     }
-//     res.status(200).send({
-//       success: true,
-//       message: "Rating saved successfully",
-//       updatedProduct,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: error.message });
-//   }
-// }

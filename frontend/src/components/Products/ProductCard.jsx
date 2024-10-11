@@ -2,42 +2,55 @@
 import { RiHeart3Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import StarRatings from "react-star-ratings";
+import axios from "axios";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const showProductDetails = (productId) => {
     navigate(`/product/${productId}`);
   };
+
+  const handleAddToCart = async (productId) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:9000/api/cart/add-to-cart`,
+        { productId },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <div
-      className="max-w-sm bg-[#F5F7FA] rounded-2xl shadow-md p-6 relative cursor-pointer"
-      onClick={() => showProductDetails(product?._id)}
-    >
+    <div className="max-w-sm bg-[#F5F7FA] rounded-2xl shadow-md p-6 relative">
       {/* Product ID */}
       <div className="absolute top-2 right-4 text-xs text-gray-400 border">
         {product?._id}
       </div>
-
       {/* Product Image */}
-      <div className="flex justify-center">
+
+      <div
+        className="flex justify-center cursor-pointer"
+        onClick={() => showProductDetails(product?._id)}
+      >
         <img
           className="w-48 h-64 object-cover"
           src={product?.productImage}
           alt={product?.title}
         />
       </div>
-
       {/* Wishlist and Compare Icons */}
       <div className="absolute top-10 right-6 flex flex-col items-center space-y-2">
         {/* <FaBalanceScale className="text-[#5C5F80] bg-[#EDEFF3] p-2 rounded-full w-10 h-10 shadow-md" /> */}
         <RiHeart3Fill className="text-[#5C5F80] hover:scale-105 hover:text-pink-600 hover:shadow-lg transition-all duration-300 cursor-pointer bg-[#EDEFF3] p-2 rounded-full w-12 h-12 shadow-md" />
       </div>
-
       {/* Product Title */}
       <h2 className="text-lg font-medium text-gray-900 mt-4">
         {product?.title}
       </h2>
-
       {/* Rating and Reviews */}
       <div className="flex items-center mt-2">
         <StarRatings
@@ -53,7 +66,6 @@ const ProductCard = ({ product }) => {
           ({product?.ratings?.length})
         </span>
       </div>
-
       {/* Price and Discount */}
       <div className="flex items-center justify-between mt-4">
         <div>
@@ -69,9 +81,11 @@ const ProductCard = ({ product }) => {
         </div>
         <div>
           {/* Add to Cart Button */}
-          <button className="relative bg-[#2667ff] hover:bg-[#2158d8] hover:scale-105 transition duration-200 text-white p-3 rounded shadow-md ">
+          <button
+            className="relative bg-[#2667ff] hover:bg-[#2158d8] hover:scale-105 transition duration-200 text-white p-3 rounded shadow-md "
+            onClick={() => handleAddToCart(product._id)}
+          >
             {/* Cart Icon */}
-            {/* <ShoppingCartIcon className="h-6 w-6 text-gray-700" /> */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

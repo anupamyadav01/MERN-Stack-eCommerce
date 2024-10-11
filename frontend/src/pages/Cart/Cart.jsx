@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FiRefreshCcw } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -9,17 +10,19 @@ import { emptyCart } from "../../assets/images";
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.cart.cartItems);
+  const cartProducts = useSelector((state) => state.cart.cartItems);
+  console.log("cart items", cartProducts);
+
   const [totalAmt, setTotalAmt] = useState("");
   const [shippingCharge, setShippingCharge] = useState("");
   useEffect(() => {
     let price = 0;
-    products.map((item) => {
+    cartProducts?.map((item) => {
       price += item.price * item.quantity;
       return price;
     });
     setTotalAmt(price);
-  }, [products]);
+  }, [cartProducts]);
   useEffect(() => {
     if (totalAmt <= 200) {
       setShippingCharge(30);
@@ -32,16 +35,16 @@ const Cart = () => {
   return (
     <div className="max-w-container mx-auto px-4">
       <Breadcrumbs title="Cart" />
-      {products.length > 0 ? (
+      {cartProducts?.length > 0 ? (
         <div className="pb-20">
-          <div className="w-full h-20 bg-[#F5F7F7] text-primeColor hidden lgl:grid grid-cols-5 place-content-center px-6 text-lg font-titleFont font-semibold">
+          <div className="w-full h-20 bg-[#F5F7F7] grid grid-cols-6 gap-10 place-content-center px-6 text-lg  font-semibold">
             <h2 className="col-span-2">Product</h2>
             <h2>Price</h2>
             <h2>Quantity</h2>
             <h2>Sub Total</h2>
           </div>
           <div className="mt-5">
-            {products?.map((item) => (
+            {cartProducts?.map((item) => (
               <div key={item._id}>
                 <ItemCard item={item} />
               </div>
@@ -50,9 +53,10 @@ const Cart = () => {
 
           <button
             onClick={() => dispatch(resetCart())}
-            className="py-2 px-10 bg-red-500 text-white font-semibold uppercase mb-4 hover:bg-red-700 duration-300"
+            className="flex items-center gap-2 py-3 px-8 bg-red-600 text-white font-semibold uppercase rounded-lg shadow-lg mb-4 hover:bg-red-700 duration-75 transform hover:scale-105"
           >
-            Reset cart
+            <FiRefreshCcw className="text-xl" />
+            Reset Cart
           </button>
 
           <div className="flex flex-col mdl:flex-row justify-between border py-4 px-4 items-center gap-2 mdl:gap-0">

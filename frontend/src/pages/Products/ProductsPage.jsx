@@ -3,8 +3,11 @@ import ProductNav from "../../components/Products/ProductNav";
 import Sidebar from "../../components/Products/Sidebar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { updateProductsArray } from "../../redux/slices/productSlice";
 
 const ProductsPage = () => {
+  const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [sortByValue, setSortByValue] = useState("All");
 
@@ -24,6 +27,7 @@ const ProductsPage = () => {
 
         if (response.status === 200) {
           setProducts(response?.data?.products);
+          dispatch(updateProductsArray(response?.data?.products));
         }
       } catch (error) {
         console.log(error);
