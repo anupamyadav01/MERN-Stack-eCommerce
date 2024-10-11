@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FaEye } from "react-icons/fa";
 import { updateProductsArray } from "../../../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
+import axiosInstance from "../../../axiosCongig";
 
 const AllProducts = () => {
   const dispatch = useDispatch();
@@ -12,9 +12,7 @@ const AllProducts = () => {
   useEffect(() => {
     const getProductsData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:9000/api/product/get-all-products`
-        );
+        const response = await axiosInstance.get(`/product/get-all-products`);
 
         dispatch(updateProductsArray(response?.data?.products));
       } catch (error) {
@@ -26,8 +24,8 @@ const AllProducts = () => {
 
   const onProductDelete = async (productId) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:9000/api/product/delete/${productId}`,
+      const response = await axiosInstance.delete(
+        `/product/delete/${productId}`,
         {
           withCredentials: true,
         }

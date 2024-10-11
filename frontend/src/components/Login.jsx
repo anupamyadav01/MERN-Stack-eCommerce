@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { LoginContext } from "../App";
+import axiosInstance from "../axiosCongig";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,8 +13,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `http://localhost:9000/api/user/login`,
+      const response = await axiosInstance.post(
+        `/user/login`,
         {
           email,
           password,

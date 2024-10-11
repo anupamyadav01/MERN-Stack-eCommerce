@@ -7,7 +7,7 @@ import {
   productsPriceRange,
   productsType,
 } from "../../constants/sortingAndFiltering";
-import axios from "axios";
+import axiosInstance from "../../axiosCongig";
 
 const Sidebar = ({ filterOptions, setFilterOptions }) => {
   const handlePriceChange = (price) => {
@@ -57,10 +57,9 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
   useEffect(() => {
     const getFilteredData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:9000/api/product/get-all-products`,
-          { params: filterOptions }
-        );
+        const response = await axiosInstance.get(`/product/get-all-products`, {
+          params: filterOptions,
+        });
         console.log(response);
       } catch (error) {
         console.log("error during filtering data", error);

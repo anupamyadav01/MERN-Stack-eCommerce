@@ -1,14 +1,13 @@
 /* eslint-disable react/prop-types */
-import axios from "axios";
 import toast from "react-hot-toast";
+import axiosInstance from "../axiosCongig";
 
 const SendOTP = ({ email, setStatus, setEmail }) => {
   const handleSendOTP = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:9000/api/user/forgot-password`,
-        { email }
-      );
+      const response = await axiosInstance.post(`/user/forgot-password`, {
+        email,
+      });
       if (response.status === 200) {
         console.log("OTP sent successfully");
         toast.success("OTP sent successfully", {

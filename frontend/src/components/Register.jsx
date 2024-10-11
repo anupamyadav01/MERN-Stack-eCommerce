@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import axiosInstance from "../axiosCongig";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -12,8 +12,8 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `http://localhost:9000/api/user/register`,
+      const response = await axiosInstance.post(
+        `/user/register`,
         {
           name,
           email,

@@ -3,8 +3,9 @@ import { useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { logoLight } from "../../assets/images";
-import axios from "axios";
+
 import toast, { Toaster } from "react-hot-toast";
+import axiosInstance from "../../axiosCongig";
 
 const SignUp = () => {
   const [clientName, setClientName] = useState("");
@@ -85,8 +86,8 @@ const SignUp = () => {
         address
       ) {
         try {
-          const response = await axios.post(
-            `http://localhost:9000/api/user/register`,
+          const response = await axiosInstance.post(
+            `/user/register`,
             {
               name: clientName,
               email,

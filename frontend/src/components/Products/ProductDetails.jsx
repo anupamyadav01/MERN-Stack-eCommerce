@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ProductReviews from "./ProductReviews";
 import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../axiosCongig";
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -12,12 +12,9 @@ const ProductDetails = () => {
     const getProductDetails = async () => {
       console.log(productId + " inside products detail");
       try {
-        const response = await axios.get(
-          `http://localhost:9000/api/product/${productId}`,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axiosInstance.get(`/product/${productId}`, {
+          withCredentials: true,
+        });
 
         if (response.status === 200) {
           setProduct(response?.data?.product);
@@ -31,8 +28,8 @@ const ProductDetails = () => {
 
   const addToWishlist = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:9000/api/product/addToWishlist/${productId}`,
+      const response = await axiosInstance.get(
+        `/product/addToWishlist/${productId}`,
         {
           withCredentials: true,
         }

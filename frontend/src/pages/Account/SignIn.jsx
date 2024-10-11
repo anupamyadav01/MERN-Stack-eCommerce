@@ -3,10 +3,10 @@ import { useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { logoLight } from "../../assets/images";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { updateLoginState } from "../../redux/slices/userSlice";
+import axiosInstance from "../../axiosCongig";
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -37,8 +37,8 @@ const SignIn = () => {
     }
     if (email && password) {
       try {
-        const response = await axios.post(
-          `http://localhost:9000/api/user/login`,
+        const response = await axiosInstance.post(
+          `/user/login`,
           {
             email,
             password,

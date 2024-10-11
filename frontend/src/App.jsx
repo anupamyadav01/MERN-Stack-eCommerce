@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -7,7 +8,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { createContext, useEffect } from "react";
-import axios from "axios";
 import Header from "./components/Home/Header/Header";
 import HeaderBottom from "./components/Home/Header/HeaderBotton";
 import Footer from "./components/Footer/Footer";
@@ -33,6 +33,7 @@ import AdminDashboardSellers from "./pages/Admin/AdminDashboardSellers.jsx";
 import AdminDashboardUsers from "./pages/Admin/AdminDashboardUsers.jsx";
 import AdminDashboardProducts from "./pages/Admin/AdminDashboardProducts.jsx";
 import ProductDetails from "./components/Products/ProductDetails.jsx";
+import axiosInstance from "./axiosCongig.js";
 
 export const LoginContext = createContext();
 
@@ -89,8 +90,8 @@ const App = () => {
     const checkUserStatus = async () => {
       try {
         // Check if user is logged in
-        const loginResponse = await axios.post(
-          `http://localhost:9000/api/user/isLoggedIn`,
+        const loginResponse = await axiosInstance.post(
+          `/user/isLoggedIn`,
           {},
           { withCredentials: true }
         );

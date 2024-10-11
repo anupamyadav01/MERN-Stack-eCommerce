@@ -1,10 +1,10 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SendOTP from "./SendOTP";
 import VerifyOTP from "./VerifyOTP";
 import ResetPassword from "./ResetPassword";
+import axiosInstance from "../axiosCongig";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -16,13 +16,10 @@ const ForgotPassword = () => {
 
   const handleVerifyOTP = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:9000/api/user/verify-otp`,
-        {
-          email,
-          otp,
-        }
-      );
+      const response = await axiosInstance.post(`/user/verify-otp`, {
+        email,
+        otp,
+      });
       if (response.status === 200) {
         console.log("OTP verified successfully");
         toast.success("OTP verified successfully", {
@@ -39,14 +36,11 @@ const ForgotPassword = () => {
 
   const handleChangePassword = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:9000/api/user/reset-password`,
-        {
-          email,
-          password,
-          confirmPassword,
-        }
-      );
+      const response = await axiosInstance.post(`/user/reset-password`, {
+        email,
+        password,
+        confirmPassword,
+      });
       if (response.status === 201) {
         console.log("Password reset successfully");
         toast.success("Password reset successfully", {

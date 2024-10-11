@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { LoginContext } from "../App";
+import axiosInstance from "../axiosCongig";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -14,8 +14,8 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:9000/api/user/logout`,
+      const response = await axiosInstance.post(
+        `/user/logout`,
         {},
         { withCredentials: true }
       );

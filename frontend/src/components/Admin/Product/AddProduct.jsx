@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import axios from "axios";
-
+import axiosInstance from "../../../axiosCongig";
 const AddProduct = ({ setAddProductVisible }) => {
   const [productData, setProductData] = useState({
     title: "",
@@ -36,8 +35,8 @@ const AddProduct = ({ setAddProductVisible }) => {
     });
 
     try {
-      const response = await axios.post(
-        `http://localhost:9000/api/product/create-product`,
+      const response = await axiosInstance.post(
+        `/product/create-product`,
         formData,
         {
           withCredentials: true,

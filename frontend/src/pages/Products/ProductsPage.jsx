@@ -2,7 +2,7 @@ import ProductGrid from "../../components/Products/ProductGrid";
 import ProductNav from "../../components/Products/ProductNav";
 import Sidebar from "../../components/Products/Sidebar";
 import { useEffect, useState } from "react";
-import axios from "axios";
+
 import { useDispatch } from "react-redux";
 import { updateProductsArray } from "../../redux/slices/productSlice";
 
@@ -21,9 +21,7 @@ const ProductsPage = () => {
   useEffect(() => {
     const getProductsData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:9000/api/product/get-all-products`
-        );
+        const response = await axios.get(`/product/get-all-products`);
 
         if (response.status === 200) {
           setProducts(response?.data?.products);

@@ -2,8 +2,8 @@
 import { RiHeart3Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import StarRatings from "react-star-ratings";
-import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import axiosInstance from "../../axiosCongig";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
@@ -13,8 +13,8 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = async (productId) => {
     try {
-      const response = await axios.post(
-        `http://localhost:9000/api/cart/add-to-cart`,
+      const response = await axiosInstance.post(
+        `/cart/add-to-cart`,
         { productId },
         {
           withCredentials: true,
