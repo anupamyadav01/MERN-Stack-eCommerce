@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 import toast, { Toaster } from "react-hot-toast";
 import axiosInstance from "../../axiosCongig";
+import { useDispatch } from "react-redux";
+import { updateCartItems } from "../../redux/slices/cartSlice";
 
 const ProductCard = ({ product }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const showProductDetails = (productId) => {
     navigate(`/product/${productId}`);
@@ -13,14 +16,17 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = async (productId) => {
     try {
-      const response = await axiosInstance.post(
-        `/cart/add-to-cart`,
-        { productId },
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(response);
+      const response = await axiosInstance.post(`/cart/add-to-cart`, {
+        productId,
+        quantity: 1,
+      });
+
+      dispatch(updateCartItems(response?.data?.user?.cartItem));
+      if (response.statusCode === 200) {
+        toast.success("Product added to cart", {
+          position: "top-right",
+        });
+      }
     } catch (error) {
       console.log(error);
       if (error.status === 401) {

@@ -52,7 +52,7 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
       discount: discount.value,
     });
   };
-  console.log(filterOptions);
+  // console.log(filterOptions);
 
   useEffect(() => {
     const getFilteredData = async () => {

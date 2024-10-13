@@ -11,7 +11,7 @@ import { emptyCart } from "../../assets/images";
 const Cart = () => {
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cart.cartItems);
-  console.log("cart items", cartProducts);
+  console.log(cartProducts);
 
   const [totalAmt, setTotalAmt] = useState("");
   const [shippingCharge, setShippingCharge] = useState("");
@@ -45,9 +45,7 @@ const Cart = () => {
           </div>
           <div className="mt-5">
             {cartProducts?.map((item) => (
-              <div key={item._id}>
-                <ItemCard item={item} />
-              </div>
+              <ItemCard key={item} item={item} />
             ))}
           </div>
 

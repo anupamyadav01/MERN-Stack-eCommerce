@@ -8,7 +8,7 @@ import {
 } from "../../redux/slices/cartSlice";
 
 const ItemCard = ({ item }) => {
-  console.log(item, "item from product card");
+  console.log("Products of Cart Items:", item);
 
   const dispatch = useDispatch();
   return (

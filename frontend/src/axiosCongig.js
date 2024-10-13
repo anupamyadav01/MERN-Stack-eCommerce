@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://full-stack-ecommerce-backend-jk6z.onrender.com/api", // Set the base URL for all requests
+  baseURL: "http://localhost:9000/api", // Set the base URL for all requests
   withCredentials: true, // Include credentials like cookies with cross-site requests
 });
 
