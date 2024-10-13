@@ -3,10 +3,14 @@ import ProductReviews from "./ProductReviews";
 import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../axiosCongig";
+import { useDispatch } from "react-redux";
+import { updateCartItems } from "../../redux/slices/cartSlice";
 
 const ProductDetails = () => {
+  const dispatch = useDispatch();
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  console.log("product from product details", product);
 
   useEffect(() => {
     const getProductDetails = async () => {
@@ -77,8 +81,10 @@ const ProductDetails = () => {
           <p className="text-sm text-gray-600 mb-4">
             <strong>Brand:</strong> {product?.brand}
           </p>
-          <p className="text-lg font-bold text-gray-800 mb-4">Price: $749</p>
-          <p className="text-sm text-gray-600 mb-4">{product?.description}</p>
+          <p className="text-lg font-bold text-gray-800 mb-4">
+            Price: ${product?.price}
+          </p>
+          <p className="text-base text-gray-600 mb-4">{product?.description}</p>
 
           {/* Price and Stock Status */}
           <div className="bg-gray-50 border rounded-lg p-4 mb-4">
@@ -102,7 +108,7 @@ const ProductDetails = () => {
                 className="border border-gray-300 rounded p-2 w-16"
               >
                 <option value="1">1</option>
-                <option value="2">2</option>
+                <option value="2">2</option>``
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
@@ -113,7 +119,12 @@ const ProductDetails = () => {
               {" "}
               {/* Adding space between buttons */}
               {/* Add to Cart Button */}
-              <button className="w-full bg-black text-white py-3 font-semibold rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center">
+              <button
+                className="w-full bg-black text-white py-3 font-semibold rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center"
+                onClick={() =>
+                  dispatch(updateCartItems(product?._id, quantity))
+                }
+              >
                 <AiOutlineShoppingCart className="mr-2 text-2xl" />
                 ADD TO CART
               </button>

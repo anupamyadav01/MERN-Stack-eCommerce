@@ -45,19 +45,27 @@ export const addProduct = async (req, res) => {
 export const getProductDetailsById = async (req, res) => {
   try {
     const { productId } = req.params;
+
+    // Check if productId is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(productId)) {
-      return res.send({
-        message: "not valid getproduct detaisl",
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product ID",
       });
     }
-    const newProductId = await mongoose.Types.ObjectId(productId);
-    const product = await ProductModel.findById(newProductId);
+
+    // Find the product by its ID
+    const product = await ProductModel.findById(productId);
+
+    // If no product is found
     if (!product) {
       return res.status(404).json({
         success: false,
         message: "Product not found",
       });
     }
+
+    // Return the product details if found
     return res.status(200).json({
       success: true,
       product,
