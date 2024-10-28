@@ -120,7 +120,6 @@ export const checkLoggedIn = async (req, res) => {
   try {
     const user = req.user;
     return res.status(200).json({
-      sucess: true,
       role: user.role,
       user,
     });

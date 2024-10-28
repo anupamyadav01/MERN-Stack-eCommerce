@@ -5,9 +5,8 @@ export const roleCheckMiddleware = async (req, res, next) => {
     if (user?.role === "admin") {
       next();
     } else {
-      return res?.status(200).send({
-        sucess: true,
-        role: user,
+      return res.status(200).send({
+        user,
       });
     }
   } catch (error) {

@@ -1,10 +1,10 @@
 import Banner from "../../components/Banner/Banner";
 import BannerBottom from "../../components/Banner/BannerBottom";
-// import BestSellers from "../../components/Home/BestSellers/BestSellers";
+import BestSellers from "../../components/Home/BestSellers/BestSellers";
 import NewArrivals from "../../components/Home/NewArrivals/NewArrivals";
 import Sale from "../../components/Home/Sale/Sale";
-// import SpecialOffers from "../../components/Home/SpecialOffers/SpecialOffers";
-// import YearProduct from "../../components/Home/YearProduct/YearProduct";
+import SpecialOffers from "../../components/Home/SpecialOffers/SpecialOffers";
+import YearProduct from "../../components/Home/YearProduct/YearProduct";
 
 const Hero = () => {
   return (
@@ -14,9 +14,9 @@ const Hero = () => {
       <div className="max-w-container mx-auto px-4">
         <Sale />
         <NewArrivals />
-        {/* <BestSellers />
+        <BestSellers />
         <YearProduct />
-        <SpecialOffers /> */}
+        <SpecialOffers />
       </div>
     </div>
   );

@@ -47,11 +47,10 @@ const SignIn = () => {
             withCredentials: true,
           }
         );
-        // console.log(response);
+        console.log(response);
 
         if (response.status === 200) {
           dispatch(updateLoginState(true));
-          console.log("User logged in successfully.");
           toast.success("User LoggedIn Successfully", {
             position: "top-right",
           });

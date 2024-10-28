@@ -15,8 +15,6 @@ const HeaderBottom = () => {
   const ref = useRef();
   useEffect(() => {
     document.body.addEventListener("click", (e) => {
-      console.log(ref.current);
-
       if (ref?.current?.contains(e.target)) {
         setShow(true);
       } else {
@@ -39,6 +37,7 @@ const HeaderBottom = () => {
     );
     setFilteredProducts(filtered);
   }, [searchQuery]);
+  console.log(userDetails);
 
   return (
     <div className="w-full bg-[#F5F5F3] relative">

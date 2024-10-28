@@ -57,10 +57,11 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
   useEffect(() => {
     const getFilteredData = async () => {
       try {
-        const response = await axiosInstance.get(`/product/get-all-products`, {
+        await axiosInstance.get(`/product/get-all-products`, {
           params: filterOptions,
         });
-        console.log(response);
+        // todo
+        // console.log(response);
       } catch (error) {
         console.log("error during filtering data", error);
       }

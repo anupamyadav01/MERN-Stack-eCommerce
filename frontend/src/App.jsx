@@ -90,16 +90,11 @@ const App = () => {
     const checkUserStatus = async () => {
       try {
         // Check if user is logged in
-        const loginResponse = await axiosInstance.post(
-          `/user/isLoggedIn`,
-          {},
-          { withCredentials: true }
-        );
+        const loginResponse = await axiosInstance.post(`/user/isLoggedIn`, {});
 
         if (loginResponse?.status === 200) {
           dispatch(updateLoginState(true));
-          // console.log(loginResponse.data.user);
-          dispatch(updateUser(loginResponse.data.user));
+          dispatch(updateUser(loginResponse?.data?.user));
 
           if (loginResponse.data.role === "admin") {
             dispatch(updateAdminState(true));
@@ -112,9 +107,6 @@ const App = () => {
 
     checkUserStatus();
   }, [isUserLoggedIn]);
-  // console.log(
-  //   `User Details: ${userDetails}, isAdmin: ${isAdmin} , isUserLoggedIn: ${isUserLoggedIn}`
-  // );
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">
