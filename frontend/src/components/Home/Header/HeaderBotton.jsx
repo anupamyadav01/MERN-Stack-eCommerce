@@ -6,6 +6,8 @@ import Flex from "../../designLayouts/Flex";
 import { Link, useNavigate } from "react-router-dom";
 import { paginationItems } from "../../../constants";
 import { useSelector } from "react-redux";
+import axiosInstance from "../../../axiosCongig";
+import toast, { Toaster } from "react-hot-toast";
 
 const HeaderBottom = () => {
   const userDetails = useSelector((state) => state.user.userInfo);
@@ -37,10 +39,31 @@ const HeaderBottom = () => {
     );
     setFilteredProducts(filtered);
   }, [searchQuery]);
-  console.log(userDetails);
+  const handleSignOut = async () => {
+    if (!userDetails) {
+      navigate("/signin");
+    }
+    try {
+      const logout = await axiosInstance.post("/user/logout");
+      // if (logout.status === 200) {
+      //   navigate("/");
+      // }
+
+      toast.success("User Logout successfully", {
+        position: "top-right",
+        style: {
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-full bg-[#F5F5F3] relative">
+      <Toaster />
       <div className="container mx-auto">
         <Flex className="flex flex-col lg:flex-row items-start lg:items-center justify-between w-full pb-4 lg:pb-0 h-full lg:h-24 px-2">
           <div
@@ -147,14 +170,20 @@ const HeaderBottom = () => {
                 transition={{ duration: 0.5 }}
                 className="absolute top-10 right-0 w-44 z-50 rounded-md bg-[#262626] text-[#767676] h-auto p-4 pb-6 border"
               >
-                <Link to="/signin">
-                  <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                    Login
+                <Link onClick={handleSignOut}>
+                  <li className="text-gray-400 px-4 py-1 border-b-[1px] font-normal border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
+                    {userDetails ? (
+                      <div className="flex items-center ">
+                        <span>Sign Out</span>
+                      </div>
+                    ) : (
+                      <span>Sign In</span>
+                    )}
                   </li>
                 </Link>
                 <Link onClick={() => setShowUser(false)} to="/signup">
                   <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                    Sign Up
+                    Register
                   </li>
                 </Link>
                 <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
