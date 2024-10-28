@@ -13,17 +13,17 @@ const HeaderBottom = () => {
   const [showUser, setShowUser] = useState(false);
   const navigate = useNavigate();
   const ref = useRef();
-  // useEffect(() => {
-  //   document.body.addEventListener("click", (e) => {
-  //     console.log(ref.current);
+  useEffect(() => {
+    document.body.addEventListener("click", (e) => {
+      console.log(ref.current);
 
-  //     if (ref?.current?.contains(e.target)) {
-  //       setShow(true);
-  //     } else {
-  //       setShow(false);
-  //     }
-  //   });
-  // }, [show, ref]);
+      if (ref?.current?.contains(e.target)) {
+        setShow(true);
+      } else {
+        setShow(false);
+      }
+    });
+  }, [show, ref]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);

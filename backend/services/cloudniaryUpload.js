@@ -9,7 +9,7 @@ export const uploadToCloudniary = async (req, res, next) => {
 
   try {
     const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: "ecommerce",
+      folder: "threads-clone",
     });
     console.log("Upload to Cloudniary Executed");
     req.secure_url = result.secure_url;

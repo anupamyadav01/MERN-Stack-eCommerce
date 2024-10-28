@@ -8,7 +8,7 @@ import Sale from "../../components/Home/Sale/Sale";
 
 const Hero = () => {
   return (
-    <div className="w-full mx-auto overflow-hidden">
+    <div className="">
       <Banner />
       <BannerBottom />
       <div className="max-w-container mx-auto px-4">

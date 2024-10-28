@@ -14,7 +14,6 @@ const storageConfig = multer.diskStorage({
     callback(null, fileName);
   },
 });
-console.log("Multer Config Executed");
 export const uploadProductImage = multer({
   storage: storageConfig,
 });
