@@ -10,9 +10,14 @@ const app = express();
 const PORT = process.env.PORT || 9000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const CLIENT_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://full-stack-ecommerce-rosy.vercel.app/"
+    : "http://localhost:5173";
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: CLIENT_URL,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
