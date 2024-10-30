@@ -40,6 +40,8 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
+
     if (!email || !password) {
       return res
         .status(400)
@@ -85,9 +87,7 @@ export const login = async (req, res) => {
       sameSite: "strict",
     });
 
-    return res
-      .status(200)
-      .json({ sucess: true, message: "Login successful", token });
+    return res.status(200).json({ message: "Login successful" });
   } catch (error) {
     console.log("Error in Login", error);
 
@@ -119,10 +119,7 @@ export const getUsers = async (req, res) => {
 export const checkLoggedIn = async (req, res) => {
   try {
     const user = req.user;
-    return res.status(200).json({
-      role: user.role,
-      user,
-    });
+    return res.status(200).json(user);
   } catch (error) {
     console.log("Error from Checklogged In", error);
 

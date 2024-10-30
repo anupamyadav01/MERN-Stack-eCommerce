@@ -14,7 +14,10 @@ export const getUserDetails = async (req, res, next) => {
       });
     }
     const loggedUser = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await UserModel.findOne({ email: loggedUser.email });
+    const user = await UserModel.findOne({ email: loggedUser.email }).select(
+      "-password -token -createdAt -updatedAt -otp -cartItem"
+    );
+
     if (!user) {
       return res.status(401).json({
         sucess: false,

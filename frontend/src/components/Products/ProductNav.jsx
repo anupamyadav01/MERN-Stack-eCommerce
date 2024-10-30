@@ -36,7 +36,7 @@ const ProductNav = ({ setSortByValue, sortByValue }) => {
                 className="absolute top-14 right-0 w-max z-50 rounded-md bg-[#262626] text-[#767676] h-auto p-4 pb-6 border"
               >
                 <div>
-                  {sortByOptions.map((item) => (
+                  {sortByOptions?.map((item) => (
                     <li
                       key={item.label}
                       onClick={() => {

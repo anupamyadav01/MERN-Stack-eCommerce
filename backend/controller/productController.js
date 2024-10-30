@@ -218,8 +218,6 @@ export const rating = async (req, res) => {
   const productId = req.params.productId;
   const { ratingNumber, comment } = req.body;
   const userId = req.user._id;
-  console.log(productId, ratingNumber, comment, userId);
-
   try {
     // find product by id
     const product = await ProductModel.findById(productId);

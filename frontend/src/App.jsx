@@ -80,21 +80,19 @@ const router = createBrowserRouter(
     </Route>
   )
 );
+
 const App = () => {
   const dispatch = useDispatch();
   const isUserLoggedIn = useSelector((state) => state.user.isUserLoggedIn);
-  // const userDetails = useSelector((state) => state.user.userInfo);
-  // const isAdmin = useSelector((state) => state.user.isAdmin);
-  // Combined hook to check both login status and user role
+
   useEffect(() => {
     const checkUserStatus = async () => {
       try {
         // Check if user is logged in
         const loginResponse = await axiosInstance.post(`/user/isLoggedIn`, {});
-
         if (loginResponse?.status === 200) {
           dispatch(updateLoginState(true));
-          dispatch(updateUser(loginResponse?.data?.user));
+          dispatch(updateUser(loginResponse?.data));
 
           if (loginResponse.data.role === "admin") {
             dispatch(updateAdminState(true));

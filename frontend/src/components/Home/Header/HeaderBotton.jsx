@@ -5,11 +5,13 @@ import { FaSearch, FaUser, FaCaretDown, FaShoppingCart } from "react-icons/fa";
 import Flex from "../../designLayouts/Flex";
 import { Link, useNavigate } from "react-router-dom";
 import { paginationItems } from "../../../constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../../axiosCongig";
 import toast, { Toaster } from "react-hot-toast";
+import { updateLoginState, updateUser } from "../../../redux/slices/userSlice";
 
 const HeaderBottom = () => {
+  const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user.userInfo);
   const [show, setShow] = useState(false);
   const [showUser, setShowUser] = useState(false);
@@ -44,10 +46,14 @@ const HeaderBottom = () => {
       navigate("/signin");
     }
     try {
-      const logout = await axiosInstance.post("/user/logout");
-      // if (logout.status === 200) {
-      //   navigate("/");
-      // }
+      const response = await axiosInstance.post("/user/logout");
+      if (response.status === 200) {
+        dispatch(updateLoginState(false));
+        dispatch(updateUser(null));
+        // setShowUser(!showUser);
+        // navigate("/");
+      }
+      console.log(response);
 
       toast.success("User Logout successfully", {
         position: "top-right",
@@ -170,14 +176,23 @@ const HeaderBottom = () => {
                 transition={{ duration: 0.5 }}
                 className="absolute top-10 right-0 w-44 z-50 rounded-md bg-[#262626] text-[#767676] h-auto p-4 pb-6 border"
               >
-                <Link onClick={handleSignOut}>
+                <Link>
                   <li className="text-gray-400 px-4 py-1 border-b-[1px] font-normal border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
                     {userDetails ? (
-                      <div className="flex items-center ">
+                      <div
+                        className="flex items-center"
+                        onClick={handleSignOut}
+                      >
                         <span>Sign Out</span>
                       </div>
                     ) : (
-                      <span>Sign In</span>
+                      <span
+                        onClick={() => {
+                          navigate("/signin");
+                        }}
+                      >
+                        Sign In
+                      </span>
                     )}
                   </li>
                 </Link>
