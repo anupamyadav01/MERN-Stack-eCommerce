@@ -15,7 +15,6 @@ const AdminHeader = () => {
           <img src={logo} className="w-full" alt="logo" />
         </Link>
       </div>
-      <div></div>
       <div className="flex items-center">
         <div className="flex items-center mr-4">
           <Link to="/dashboard/cupouns" className="800px:block">
@@ -25,24 +24,24 @@ const AdminHeader = () => {
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-events" className="800px:block">
+          <Link to="/dashboard/events" className="800px:block">
             <MdOutlineLocalOffer
               color="#555"
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-products" className="800px:block">
+          <Link to="/dashboard/products" className="800px:block">
             <FiShoppingBag
               color="#555"
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-orders" className="800px:block">
+          <Link to="/dashboard/orders" className="800px:block">
             <FiPackage color="#555" size={30} className="mx-5 cursor-pointer" />
           </Link>
-          <Link to="/dashboard-messages" className="800px:block">
+          <Link to="/dashboard/messages" className="800px:block">
             <BiMessageSquareDetail
               color="#555"
               size={30}

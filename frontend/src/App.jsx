@@ -1,11 +1,12 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
+/* eslint-disable react/prop-types */
+import { lazy, Suspense } from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Outlet,
   Route,
   RouterProvider,
+  useNavigate,
 } from "react-router-dom";
 import { createContext, useEffect } from "react";
 import Header from "./components/Home/Header/Header";
@@ -27,56 +28,66 @@ import About from "./pages/About/About.jsx";
 import FAQPage from "./pages/FAQPage/index.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
 import ProductsPage from "./pages/Products/ProductsPage.jsx";
-import AdminDashboardPage from "./pages/Admin/AdminDashboardPage.jsx";
-import AdminDashboardOrders from "./pages/Admin/AdminDashboardOrders.jsx";
-import AdminDashboardSellers from "./pages/Admin/AdminDashboardSellers.jsx";
-import AdminDashboardUsers from "./pages/Admin/AdminDashboardUsers.jsx";
-import AdminDashboardProducts from "./pages/Admin/AdminDashboardProducts.jsx";
 import ProductDetails from "./components/Products/ProductDetails.jsx";
 import axiosInstance from "./axiosCongig.js";
 
+// Lazy load AdminRoutes
+const AdminRoutes = lazy(() => import("./pages/Admin/AdminRoutes.jsx"));
 export const LoginContext = createContext();
 
-const Layout = () => {
-  return (
-    <div>
-      <Header />
-      <HeaderBottom />
-      <div className="container mx-auto">
-        <Outlet />
-      </div>
-      <Footer />
-      <FooterBottom />
+const Layout = () => (
+  <div>
+    <Header />
+    <HeaderBottom />
+    <div className="container mx-auto">
+      <Outlet />
     </div>
-  );
+    <Footer />
+    <FooterBottom />
+  </div>
+);
+
+const AdminGuard = ({ children }) => {
+  const isAdmin = useSelector((state) => state.user.isAdmin);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate("/"); // Redirect non-admin users to home or login
+    }
+  }, [isAdmin, navigate]);
+
+  return isAdmin ? children : null;
 };
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<Layout />}>
-        {/* Navbar Links Route */}
         <Route index element={<Home />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/about" element={<About />} />
         <Route path="/FAQs" element={<FAQPage />} />
-
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/product/:productId" element={<ProductDetails />} />
       </Route>
 
-      {/* User Authentication Route */}
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="forgot-password" element={<ForgotPassword />} />
 
-      {/* Admin Routes  */}
-      <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-      <Route path="/admin-orders" element={<AdminDashboardOrders />} />
-      <Route path="/admin-sellers" element={<AdminDashboardSellers />} />
-      <Route path="/admin-users" element={<AdminDashboardUsers />} />
-      <Route path="admin-products" element={<AdminDashboardProducts />} />
+      {/* Admin Routes with Guard */}
+      <Route
+        path="/admin/*"
+        element={
+          <AdminGuard>
+            <Suspense fallback={<div>Loading...</div>}>
+              <AdminRoutes />
+            </Suspense>
+          </AdminGuard>
+        }
+      />
     </Route>
   )
 );
@@ -88,12 +99,10 @@ const App = () => {
   useEffect(() => {
     const checkUserStatus = async () => {
       try {
-        // Check if user is logged in
         const loginResponse = await axiosInstance.post(`/user/isLoggedIn`, {});
         if (loginResponse?.status === 200) {
           dispatch(updateLoginState(true));
           dispatch(updateUser(loginResponse?.data));
-
           if (loginResponse.data.role === "admin") {
             dispatch(updateAdminState(true));
           }
@@ -104,7 +113,7 @@ const App = () => {
     };
 
     checkUserStatus();
-  }, [isUserLoggedIn]);
+  }, [dispatch, isUserLoggedIn]);
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">

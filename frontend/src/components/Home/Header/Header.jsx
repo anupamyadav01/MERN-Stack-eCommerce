@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { MdClose } from "react-icons/md";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { motion } from "framer-motion";
 import { logo, logoLight } from "../../../assets/images";
 import { navBarList } from "../../../constants";
 import Flex from "../../designLayouts/Flex";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const userInfo = useSelector((state) => state?.user?.userInfo);
   const [showMenu, setShowMenu] = useState(true);
   const [sidenav, setSidenav] = useState(false);
   const [category, setCategory] = useState(false);
@@ -34,7 +38,7 @@ const Header = () => {
               <img src={logo} alt="logo" />
             </div>
           </Link>
-          <div>
+          <div className="flex items-center justify-center">
             {showMenu && (
               <motion.ul
                 initial={{ y: 30, opacity: 0 }}
@@ -145,6 +149,14 @@ const Header = () => {
                   </span>
                 </motion.div>
               </div>
+            )}
+            {userInfo?.role === "admin" && (
+              <button
+                className="bg-[#0077b6] hover:bg-[#005f8d] text-white py-3 px-4 rounded-md shadow-md transition duration-300 ease-in-out"
+                onClick={() => navigate("/admin/dashboard")}
+              >
+                Admin Panel
+              </button>
             )}
           </div>
         </Flex>
