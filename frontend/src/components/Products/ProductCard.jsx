@@ -40,7 +40,7 @@ const ProductCard = ({ product }) => {
     }
   };
   return (
-    <div className="max-w-sm bg-[#F5F7FA] rounded-2xl shadow-md p-6 relative">
+    <div className="max-w-sm bg-[#F5F7FA] rounded-2xl shadow-md px-6 py-8 relative">
       <Toaster />
       {/* Product ID */}
       <div className="absolute top-2 right-4 text-xs text-gray-400 border">
@@ -53,7 +53,7 @@ const ProductCard = ({ product }) => {
         onClick={() => showProductDetails(product?._id)}
       >
         <img
-          className="w-48 h-64 object-cover"
+          className="w-60 h-64 object-cover"
           src={product?.productImage}
           alt={product?.title}
         />

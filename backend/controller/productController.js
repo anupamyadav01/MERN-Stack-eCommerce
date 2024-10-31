@@ -120,46 +120,54 @@ export const checkRole = async (req, res) => {
 };
 
 export const showProducts = async (req, res) => {
+  console.log(req.query);
+
   try {
     let query = {};
     let sortArgs = {};
+    // sort by price
     if (req.query.sortbyprice) {
       const { min, max } = req.query.sortbyprice;
       const minPrice = parseInt(min, 10);
       const maxPrice = parseInt(max, 10);
       query.price = { $gte: minPrice, $lte: maxPrice };
     }
+
+    // sort by rating
     if (req.query.sortbyrating) {
       const rating = parseInt(req.query.sortbyrating, 10);
       query.rating = { $gte: rating };
     }
+
+    // sort by brands
     if (req.query.brands) {
       const brands = Array.isArray(req.query.brands)
         ? req.query.brands
         : [req.query.brands];
       query.brand = { $in: brands };
     }
+
+    // sort by types
     if (req.query.types) {
       const types = Array.isArray(req.query.types)
         ? req.query.types
         : [req.query.types];
       query.category = { $in: types };
     }
+
+    // sort by discount
     if (req.query.discount) {
       const discountNum = parseInt(req.query.discount, 10);
       query.discountPercentage = { $gte: discountNum };
     }
 
+    // search by title
     if (req.query.title) {
-      query.title = { $regex: req.query.title, $options: "i" }; // here i stands for case insensitive means it will ignore the case of the letters
+      query.title = { $regex: req.query.title, $options: "i" };
     }
 
     const products = await ProductModel.find(query).sort(sortArgs);
-    return res.status(200).json({
-      success: true,
-      message: "Products fetched successfully",
-      products: products,
-    });
+    return res.status(200).json({ products });
   } catch (error) {
     console.log("Something went wrong in showProducts", error);
     return res.status(500).json({

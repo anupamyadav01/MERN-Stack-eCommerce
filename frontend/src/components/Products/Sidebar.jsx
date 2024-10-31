@@ -8,8 +8,11 @@ import {
   productsType,
 } from "../../constants/sortingAndFiltering";
 import axiosInstance from "../../axiosCongig";
+import { useDispatch } from "react-redux";
+import { updateProductsArray } from "../../redux/slices/productSlice";
 
 const Sidebar = ({ filterOptions, setFilterOptions }) => {
+  const dispatch = useDispatch();
   const handlePriceChange = (price) => {
     setFilterOptions({
       ...filterOptions,
@@ -57,17 +60,19 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
   useEffect(() => {
     const getFilteredData = async () => {
       try {
-        await axiosInstance.get(`/product/get-all-products`, {
-          params: filterOptions,
-        });
-        // todo
-        // console.log(response);
+        const updatedProducts = await axiosInstance.get(
+          `/product/get-all-products`,
+          {
+            params: filterOptions,
+          }
+        );
+        dispatch(updateProductsArray(updatedProducts?.data?.products));
       } catch (error) {
         console.log("error during filtering data", error);
       }
     };
     getFilteredData();
-  }, [filterOptions]);
+  }, [dispatch, filterOptions]);
 
   return (
     <div className="w-64 bg-white p-6 shadow-md lg:block">

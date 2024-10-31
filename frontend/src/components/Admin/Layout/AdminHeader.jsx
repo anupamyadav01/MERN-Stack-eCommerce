@@ -3,7 +3,7 @@ import { logo } from "../../../assets/images";
 
 const AdminHeader = () => {
   return (
-    <div className="w-full h-[80px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4 border border-red-600">
+    <div className="w-full h-[80px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
       <div>
         <Link to="/">
           <img src={logo} className="w-full" alt="logo" />

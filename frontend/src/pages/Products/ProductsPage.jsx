@@ -3,13 +3,13 @@ import ProductNav from "../../components/Products/ProductNav";
 import Sidebar from "../../components/Products/Sidebar";
 import { useEffect, useState } from "react";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateProductsArray } from "../../redux/slices/productSlice";
 import axiosInstance from "../../axiosCongig";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
-  const [products, setProducts] = useState([]);
+  const products = useSelector((state) => state?.products?.products);
   const [sortByValue, setSortByValue] = useState("All");
 
   const [filterOptions, setFilterOptions] = useState({
@@ -25,7 +25,6 @@ const ProductsPage = () => {
         const response = await axiosInstance.get(`/product/get-all-products`);
 
         if (response.status === 200) {
-          setProducts(response?.data?.products);
           dispatch(updateProductsArray(response?.data?.products));
         }
       } catch (error) {
@@ -33,7 +32,7 @@ const ProductsPage = () => {
       }
     };
     getProductsData();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="bg-gray-100 min-h-screen">
