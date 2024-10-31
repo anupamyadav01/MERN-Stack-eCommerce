@@ -90,7 +90,7 @@ const Header = () => {
                         </li>
                       ))}
                     </ul>
-                    <div className="mt-4">
+                    <div className="mt-4 border border-black">
                       <h1
                         onClick={() => setCategory(!category)}
                         className="flex justify-between text-base cursor-pointer items-center font-titleFont mb-2"

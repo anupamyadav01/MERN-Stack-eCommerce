@@ -15,7 +15,6 @@ const userSlice = createSlice({
     },
     updateUser: (state, action) => {
       state.userInfo = action.payload;
-      console.log(state?.userInfo);
     },
   },
 });
