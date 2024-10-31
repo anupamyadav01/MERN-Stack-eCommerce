@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { AiOutlineMoneyCollect } from "react-icons/ai";
 import { MdBorderClear } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -86,7 +85,7 @@ const AdminDashboardMain = () => {
       {adminOrderLoading ? (
         <Loader /> // If you want to remove the loader dependency, replace it with a div like <div>Loading...</div>
       ) : (
-        <div className="w-full p-4">
+        <div className="w-full p-4 max-w-[90%] mx-auto">
           <h3 className="text-[22px] font-Poppins pb-2">Overview</h3>
           <div className="w-full block 800px:flex items-center justify-between">
             <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">

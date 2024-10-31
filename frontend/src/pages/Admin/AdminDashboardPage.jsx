@@ -8,8 +8,8 @@ const AdminDashboardPage = () => {
       <AdminHeader />
       <div className="w-full flex">
         <div className="flex items-start justify-between w-full">
-          <div className="w-[80px] 800px:w-[330px]">
-            <AdminSideBar active={1} />
+          <div className="w-[80px] fixed top-1/2 -translate-y-1/2 left-0 shadow-2xl rounded-md overflow-hidden">
+            <AdminSideBar />
           </div>
           <AdminDashboardMain />
         </div>
