@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import ItemCard from "./ItemCard";
-import { resetCart, updateCartItems } from "../../redux/slices/cartSlice";
+import { updateCartItems } from "../../redux/slices/cartSlice";
 import { emptyCart } from "../../assets/images";
 import axiosInstance from "../../axiosCongig";
 
@@ -51,6 +51,15 @@ const Cart = () => {
     }
   }, [totalAmt]);
 
+  const resetCart = async () => {
+    try {
+      const response = await axiosInstance.post("/cart/resetCart");
+      dispatch(updateCartItems(response?.data?.updatedData?.cartItem));
+    } catch (error) {
+      console.log("Cart reset", error);
+    }
+  };
+
   return (
     <div className="max-w-container mx-auto px-4">
       <Breadcrumbs title="Cart" />
@@ -69,7 +78,7 @@ const Cart = () => {
           </div>
 
           <button
-            onClick={() => dispatch(resetCart())}
+            onClick={resetCart}
             className="flex items-center gap-2 py-3 px-8 bg-red-600 text-white font-semibold uppercase rounded-lg shadow-lg mb-4 hover:bg-red-700 duration-75 transform hover:scale-105"
           >
             <FiRefreshCcw className="text-xl" />

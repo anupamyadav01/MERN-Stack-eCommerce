@@ -51,4 +51,21 @@ export const removeItem = async (req, res) => {
   }
 };
 
-export const resetCart = async (req, res) => {};
+export const resetCart = async (req, res) => {
+  const userId = req?.user?._id;
+  try {
+    const updatedData = await UserModel.findByIdAndUpdate(
+      userId,
+      {
+        cartItem: [],
+      },
+      { new: true }
+    ).populate("cartItem.productId");
+
+    res.status(200).json({
+      updatedData,
+    });
+  } catch (error) {
+    console.log("ERROR FROM resetCart", error);
+  }
+};
