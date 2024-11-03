@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addProduct,
+  addToCart,
   addToWishlist,
   deleteProduct,
   getProductDetailsById,
@@ -46,5 +47,7 @@ ProductRouter.get("/review/:productId", getReviewsByProductId);
 ProductRouter.get("/addToWishlist/:productId", getUserDetails, addToWishlist);
 
 ProductRouter.post("/rating/:productId", getUserDetails, rating);
+
+ProductRouter.post("/addToCart/:productId", getUserDetails, addToCart);
 
 export default ProductRouter;

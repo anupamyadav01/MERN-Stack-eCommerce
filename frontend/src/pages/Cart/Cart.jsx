@@ -5,47 +5,66 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import ItemCard from "./ItemCard";
-import { resetCart } from "../../redux/slices/cartSlice";
+import { resetCart, updateCartItems } from "../../redux/slices/cartSlice";
 import { emptyCart } from "../../assets/images";
+import axiosInstance from "../../axiosCongig";
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const cartProducts = useSelector((state) => state.cart.cartItems);
-  console.log(cartProducts);
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
-  const [totalAmt, setTotalAmt] = useState("");
-  const [shippingCharge, setShippingCharge] = useState("");
+  const [totalAmt, setTotalAmt] = useState(0);
+  const [shippingCharge, setShippingCharge] = useState(0);
+
+  useEffect(() => {
+    const getCartItems = async () => {
+      try {
+        const response = await axiosInstance.get("/cart/getAllCartItems");
+        dispatch(updateCartItems(response?.data));
+      } catch (error) {
+        console.log("ERROR IN CART PAGE", error);
+      }
+    };
+    getCartItems();
+  }, [dispatch]);
+
+  // Calculate subtotal and total amount
   useEffect(() => {
     let price = 0;
-    cartProducts?.map((item) => {
-      price += item.price * item.quantity;
-      return price;
+    cartItems?.forEach((item) => {
+      const itemPrice = item.productId.price;
+      const discount = (itemPrice * item.productId.discountPercentage) / 100;
+      const discountedPrice = itemPrice - discount;
+      price += discountedPrice * item.quantity;
     });
     setTotalAmt(price);
-  }, [cartProducts]);
+  }, [cartItems]);
+
+  // Set shipping charge based on total amount
   useEffect(() => {
     if (totalAmt <= 200) {
       setShippingCharge(30);
     } else if (totalAmt <= 400) {
       setShippingCharge(25);
-    } else if (totalAmt > 401) {
+    } else {
       setShippingCharge(20);
     }
   }, [totalAmt]);
+
   return (
     <div className="max-w-container mx-auto px-4">
       <Breadcrumbs title="Cart" />
-      {cartProducts?.length > 0 ? (
+      {cartItems?.length > 0 ? (
         <div className="pb-20">
-          <div className="w-full h-20 bg-[#F5F7F7] grid grid-cols-6 gap-10 place-content-center px-6 text-lg  font-semibold">
+          <div className="w-full h-20 bg-[#F5F7F7] grid grid-cols-6 gap-10 place-content-center px-6 text-lg font-semibold">
             <h2 className="col-span-2">Product</h2>
             <h2>Price</h2>
             <h2>Quantity</h2>
             <h2>Sub Total</h2>
           </div>
           <div className="mt-5">
-            {cartProducts?.map((item) => (
-              <ItemCard key={item} item={item} />
+            {cartItems?.map((item) => (
+              <ItemCard key={item._id} item={item} />
             ))}
           </div>
 
@@ -57,19 +76,22 @@ const Cart = () => {
             Reset Cart
           </button>
 
-          <div className="flex flex-col mdl:flex-row justify-between border py-4 px-4 items-center gap-2 mdl:gap-0">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col mdl:flex-row justify-between border py-8 px-6 items-center gap-4 mdl:gap-0 bg-gray-50 rounded-lg shadow-md">
+            <div className="flex items-center justify-center gap-4 w-full mdl:w-auto">
               <input
-                className="w-44 mdl:w-52 h-8 px-4 border text-primeColor text-sm outline-none border-gray-400"
+                className="w-52 h-10 px-4 border border-gray-300 rounded-lg text-gray-600 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150 ease-in-out"
                 type="text"
-                placeholder="Coupon Number"
+                placeholder="Enter Coupon Code"
               />
-              <p className="text-sm mdl:text-base font-semibold">
+              <button className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-semibold py-2 px-6 rounded-lg shadow-lg hover:from-indigo-600 hover:to-purple-700 hover:shadow-xl transform hover:scale-105 transition duration-200 ease-in-out">
                 Apply Coupon
-              </p>
+              </button>
             </div>
-            <p className="text-lg font-semibold">Update Cart</p>
+            <button className="mt-6 text-lg font-semibold text-indigo-600 bg-white py-2 px-4 rounded-lg shadow-md hover:bg-indigo-100 hover:shadow-lg transition duration-200 ease-in-out transform hover:scale-105">
+              Update Cart
+            </button>
           </div>
+
           <div className="max-w-7xl gap-4 flex justify-end mt-4">
             <div className="w-96 flex flex-col gap-4">
               <h1 className="text-2xl font-semibold text-right">Cart totals</h1>
@@ -77,19 +99,19 @@ const Cart = () => {
                 <p className="flex items-center justify-between border-[1px] border-gray-400 border-b-0 py-1.5 text-lg px-4 font-medium">
                   Subtotal
                   <span className="font-semibold tracking-wide font-titleFont">
-                    ${totalAmt}
+                    ₹{totalAmt.toFixed(2)}
                   </span>
                 </p>
                 <p className="flex items-center justify-between border-[1px] border-gray-400 border-b-0 py-1.5 text-lg px-4 font-medium">
                   Shipping Charge
                   <span className="font-semibold tracking-wide font-titleFont">
-                    ${shippingCharge}
+                    ₹{shippingCharge}
                   </span>
                 </p>
                 <p className="flex items-center justify-between border-[1px] border-gray-400 py-1.5 text-lg px-4 font-medium">
                   Total
                   <span className="font-bold tracking-wide text-lg font-titleFont">
-                    ${totalAmt + shippingCharge}
+                    ₹{(totalAmt + shippingCharge).toFixed(2)}
                   </span>
                 </p>
               </div>

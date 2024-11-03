@@ -39,15 +39,15 @@ const ProductCard = ({ product }) => {
       }
     }
   };
+
   return (
-    <div className="max-w-sm bg-[#F5F7FA] rounded-2xl shadow-md px-6 py-8 relative">
+    <div className="max-w-sm w-full bg-[#F5F7FA] rounded-2xl shadow-md px-6 py-8 relative">
       <Toaster />
       {/* Product ID */}
       <div className="absolute top-2 right-4 text-xs text-gray-400 border">
         {product?._id}
       </div>
       {/* Product Image */}
-
       <div
         className="flex justify-center cursor-pointer"
         onClick={() => showProductDetails(product?._id)}
@@ -60,7 +60,6 @@ const ProductCard = ({ product }) => {
       </div>
       {/* Wishlist and Compare Icons */}
       <div className="absolute top-10 right-6 flex flex-col items-center space-y-2">
-        {/* <FaBalanceScale className="text-[#5C5F80] bg-[#EDEFF3] p-2 rounded-full w-10 h-10 shadow-md" /> */}
         <RiHeart3Fill className="text-[#5C5F80] hover:scale-105 hover:text-pink-600 hover:shadow-lg transition-all duration-300 cursor-pointer bg-[#EDEFF3] p-2 rounded-full w-12 h-12 shadow-md" />
       </div>
       {/* Product Title */}
@@ -98,7 +97,7 @@ const ProductCard = ({ product }) => {
         <div>
           {/* Add to Cart Button */}
           <button
-            className="relative bg-[#2667ff] hover:bg-[#2158d8] hover:scale-105 transition duration-200 text-white p-3 rounded shadow-md "
+            className="relative bg-[#2667ff] hover:bg-[#2158d8] hover:scale-105 transition duration-200 text-white p-3 rounded shadow-md"
             onClick={() => handleAddToCart(product._id)}
           >
             {/* Cart Icon */}

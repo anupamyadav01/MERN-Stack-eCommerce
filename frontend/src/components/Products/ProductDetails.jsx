@@ -3,18 +3,12 @@ import ProductReviews from "./ProductReviews";
 import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../axiosCongig";
-import { useDispatch } from "react-redux";
-import { updateCartItems } from "../../redux/slices/cartSlice";
 
 const ProductDetails = () => {
-  const dispatch = useDispatch();
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  console.log("product from product details", product);
-
   useEffect(() => {
     const getProductDetails = async () => {
-      console.log(productId + " inside products detail");
       try {
         const response = await axiosInstance.get(`/product/${productId}`, {
           withCredentials: true,
@@ -41,6 +35,15 @@ const ProductDetails = () => {
       console.log(response);
     } catch (error) {
       console.log(error);
+    }
+  };
+  const handleAddToCart = async (prodId) => {
+    try {
+      await axiosInstance.post(`/product/addToCart/${productId}`, {
+        productId: prodId,
+      });
+    } catch (error) {
+      console.log("ERROR FROM ADD TO CARD", error);
     }
   };
 
@@ -121,9 +124,7 @@ const ProductDetails = () => {
               {/* Add to Cart Button */}
               <button
                 className="w-full bg-black text-white py-3 font-semibold rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center"
-                onClick={() =>
-                  dispatch(updateCartItems(product?._id, quantity))
-                }
+                onClick={() => handleAddToCart(product?._id)}
               >
                 <AiOutlineShoppingCart className="mr-2 text-2xl" />
                 ADD TO CART

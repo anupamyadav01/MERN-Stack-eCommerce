@@ -6,10 +6,8 @@ export const sortByOptions = [
 ];
 
 export const productsPriceRange = [
-  { label: "Under $100", min: 0, max: 100 },
-  { label: "$100 - $300", min: 100, max: 300 },
-  { label: "$300 - $500", min: 300, max: 500 },
-  { label: "$500 - $1000", min: 500, max: 1000 },
+  { label: "Under $500", min: 0, max: 499 },
+  { label: "$500 - $1000", min: 500, max: 999 },
   { label: "$1000 - $2000", min: 1000, max: 2000 },
   { label: "Above $2000", min: 2000, max: 10000 },
 ];

@@ -13,8 +13,6 @@ export const addProduct = async (req, res) => {
       brand,
       category,
       thumbnail,
-      productImage,
-      addedBy,
     } = req.body;
     const product = await ProductModel.create({
       title,
@@ -37,7 +35,6 @@ export const addProduct = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in Add Product", error);
-
     return res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -287,5 +284,45 @@ export const rating = async (req, res) => {
       success: false,
       message: "Something went wrong, please try again. {Rating Controller}",
     });
+  }
+};
+
+export const addToCart = async (req, res) => {
+  const { productId } = req.body;
+  const userId = req?.user?._id;
+
+  try {
+    const updatedProductId = new mongoose.Types.ObjectId(productId);
+
+    // Step 1: Check if productId is valid or not
+    const isProductIdValid = await ProductModel.findById(updatedProductId);
+    if (!isProductIdValid) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Step 2: Check if user already has the product in cart
+
+    const user = await UserModel.findOne({ _id: userId });
+    const productInCart = user?.cartItem?.some(
+      (item) => item.productId.toString() === productId
+    );
+
+    if (productInCart) {
+      return res
+        .status(200)
+        .json({ message: "Product already exists in cart" });
+    }
+
+    // Step 3: Product does not exist in cart, add it
+    user.cartItem.push({ productId: updatedProductId, quantity: 1 });
+    await user.save();
+
+    // Respond with success
+    res.status(200).json({
+      message: "Product added to cart successfully",
+    });
+  } catch (error) {
+    console.error("ERROR FROM ADDTOCART", error);
+    res.status(500).json({ error: "An error occurred while adding to cart" });
   }
 };

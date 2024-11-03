@@ -38,9 +38,9 @@ const ProductNav = ({ setSortByValue, sortByValue }) => {
                 <div>
                   {sortByOptions?.map((item) => (
                     <li
-                      key={item.label}
+                      key={item?.label}
                       onClick={() => {
-                        setSortByValue(item.label);
+                        setSortByValue(item?.label);
                         setIsOpen(false);
                       }}
                       className="text-gray-400 px-2 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer"

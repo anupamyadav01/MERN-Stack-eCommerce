@@ -5,20 +5,29 @@ import {
   discount,
   productsBrand,
   productsPriceRange,
-  productsType,
 } from "../../constants/sortingAndFiltering";
 import axiosInstance from "../../axiosCongig";
 import { useDispatch } from "react-redux";
 import { updateProductsArray } from "../../redux/slices/productSlice";
 
+const initialFilterOptions = {
+  sortbyprice: null,
+  sortbyrating: null,
+  brands: [],
+  types: [],
+  discount: null,
+};
+
 const Sidebar = ({ filterOptions, setFilterOptions }) => {
   const dispatch = useDispatch();
+
   const handlePriceChange = (price) => {
     setFilterOptions({
       ...filterOptions,
       sortbyprice: { min: price.min, max: price.max },
     });
   };
+
   const handleRatingChange = (rating) => {
     setFilterOptions({
       ...filterOptions,
@@ -37,17 +46,17 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
     });
   };
 
-  const handleProductTypeChange = (type) => {
-    const isTypeSelected = filterOptions.types.includes(type);
-    const updatedProductTypes = isTypeSelected
-      ? filterOptions.types.filter((t) => t !== type)
-      : [...filterOptions.types, type];
+  // const handleProductTypeChange = (type) => {
+  //   const isTypeSelected = filterOptions.types.includes(type);
+  //   const updatedProductTypes = isTypeSelected
+  //     ? filterOptions.types.filter((t) => t !== type)
+  //     : [...filterOptions.types, type];
 
-    setFilterOptions({
-      ...filterOptions,
-      types: updatedProductTypes,
-    });
-  };
+  //   setFilterOptions({
+  //     ...filterOptions,
+  //     types: updatedProductTypes,
+  //   });
+  // };
 
   const handleDiscountChange = (discount) => {
     setFilterOptions({
@@ -55,7 +64,10 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
       discount: discount.value,
     });
   };
-  // console.log(filterOptions);
+
+  const handleResetFilters = () => {
+    setFilterOptions(initialFilterOptions);
+  };
 
   useEffect(() => {
     const getFilteredData = async () => {
@@ -68,7 +80,7 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
         );
         dispatch(updateProductsArray(updatedProducts?.data?.products));
       } catch (error) {
-        console.log("error during filtering data", error);
+        console.log("Error during filtering data", error);
       }
     };
     getFilteredData();
@@ -89,15 +101,20 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
                 name="sortbyprice"
                 value={price.label}
                 className="mr-2"
+                checked={
+                  filterOptions.sortbyprice &&
+                  filterOptions.sortbyprice.min === price.min &&
+                  filterOptions.sortbyprice.max === price.max
+                }
                 onChange={() => handlePriceChange(price)}
-              />{" "}
+              />
               {price.label}
             </label>
           ))}
         </div>
       </div>
 
-      {/* Customer rating filter  */}
+      {/* Customer rating filter */}
       <div className="mb-6">
         <h3 className="font-medium mb-2">Customer Rating</h3>
         <div className="space-y-1">
@@ -108,8 +125,9 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
                 name="sortbyrating"
                 value={rating.label}
                 className="mr-2"
+                checked={filterOptions.sortbyrating === rating.value}
                 onChange={() => handleRatingChange(rating)}
-              />{" "}
+              />
               {rating.label}
             </label>
           ))}
@@ -136,7 +154,7 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
       </div>
 
       {/* Product Type Filter */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h3 className="font-medium mb-2">Product Type</h3>
         <div className="space-y-1">
           {productsType.map((type) => (
@@ -147,27 +165,28 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
                 value={type}
                 checked={filterOptions.types.includes(type)}
                 onChange={() => handleProductTypeChange(type)}
-              />{" "}
+              />
               {type}
             </label>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* Discount Filtering */}
       <div className="mb-6">
         <h3 className="font-medium mb-2">Discount</h3>
         <div className="space-y-1">
-          {discount.map((discount) => (
-            <label key={discount.label} className="block">
+          {discount.map((discountItem) => (
+            <label key={discountItem.label} className="block">
               <input
                 type="radio"
                 name="sortbydiscount"
                 className="mr-2"
-                value={discount.value}
-                onChange={() => handleDiscountChange(discount)}
-              />{" "}
-              {discount.label}
+                value={discountItem.value}
+                checked={filterOptions.discount === discountItem.value}
+                onChange={() => handleDiscountChange(discountItem)}
+              />
+              {discountItem.label}
             </label>
           ))}
         </div>
@@ -179,7 +198,7 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
 
       <button
         className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md w-full mt-2"
-        onClick={() => setFilterOptions({})}
+        onClick={handleResetFilters}
       >
         Reset Filters
       </button>
