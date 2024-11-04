@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const CLIENT_URL =
   process.env.NODE_ENV === "production"
-    ? "https://full-stack-ecommerce-rosy.vercel.app/"
+    ? "https://full-stack-ecommerce-backend-jk6z.onrender.com"
     : "http://localhost:5173";
 
 app.use(
