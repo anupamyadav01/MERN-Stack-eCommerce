@@ -84,7 +84,7 @@ export const login = async (req, res) => {
       path: "/",
       expires: new Date(Date.now() + 3600000),
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "none",
     });
 
     return res.status(200).json({ message: "Login successful" });
