@@ -126,7 +126,13 @@ const Cart = () => {
               </div>
               <div className="flex justify-end">
                 <Link to="/paymentgateway">
-                  <button className="w-52 h-10 bg-primeColor text-white hover:bg-black duration-300">
+                  <button
+                    className="w-52 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold uppercase rounded-lg shadow-lg hover:from-purple-600 hover:to-indigo-500 hover:shadow-xl transform hover:scale-105 transition duration-200 ease-in-out"
+                    style={{
+                      zIndex: 10,
+                      background: "linear-gradient(90deg, #4F46E5, #8B5CF6)",
+                    }}
+                  >
                     Proceed to Checkout
                   </button>
                 </Link>
