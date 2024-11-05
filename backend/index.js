@@ -10,28 +10,27 @@ const app = express();
 const PORT = process.env.PORT || 9000;
 
 dotenv.config(); // Load environment variables
-// Determine the client URL based on the environment
-const CLIENT_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://full-stack-ecommerce-rosy.vercel.app"
-    : "http://localhost:5173";
 
-// Middleware to parse JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Configure CORS
-app.use(
-  cors({
-    origin: CLIENT_URL,
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-  })
-);
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://full-stack-ecommerce-rosy.vercel.app",
+];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+};
 
-// Handle OPTIONS requests for CORS preflight
-// app.options("*", cors({ origin: CLIENT_URL, credentials: true }));
+app.use(cors(corsOptions));
 
 // Connect to MongoDB
 connectToMongoDB();
