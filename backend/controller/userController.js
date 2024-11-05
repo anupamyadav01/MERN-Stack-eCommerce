@@ -82,6 +82,7 @@ export const login = async (req, res) => {
       path: "/",
       expires: new Date(Date.now() + 3600000),
       httpOnly: true,
+      secure: true,
       sameSite: "lax",
     });
 

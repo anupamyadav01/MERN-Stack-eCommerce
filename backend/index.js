@@ -31,7 +31,7 @@ app.use(
 );
 
 // Handle OPTIONS requests for CORS preflight
-app.options("*", cors({ origin: CLIENT_URL, credentials: true }));
+// app.options("*", cors({ origin: CLIENT_URL, credentials: true }));
 
 // Connect to MongoDB
 connectToMongoDB();
