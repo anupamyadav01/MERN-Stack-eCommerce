@@ -40,8 +40,6 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
-
     if (!email || !password) {
       return res
         .status(400)
@@ -84,7 +82,7 @@ export const login = async (req, res) => {
       path: "/",
       expires: new Date(Date.now() + 3600000),
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "lax",
     });
 
     return res.status(200).json({ message: "Login successful" });

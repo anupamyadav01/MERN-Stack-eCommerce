@@ -117,8 +117,6 @@ export const checkRole = async (req, res) => {
 };
 
 export const showProducts = async (req, res) => {
-  console.log(req.query);
-
   try {
     let query = {};
     let sortArgs = {};

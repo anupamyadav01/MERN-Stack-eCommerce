@@ -6,11 +6,10 @@ import userRouter from "./routes/userRoutes.js";
 import ProductRouter from "./routes/productRoutes.js";
 import { CartRouter } from "./routes/cartRoutes.js";
 
-dotenv.config(); // Load environment variables
-
 const app = express();
 const PORT = process.env.PORT || 9000;
 
+dotenv.config(); // Load environment variables
 // Determine the client URL based on the environment
 const CLIENT_URL =
   process.env.NODE_ENV === "production"
