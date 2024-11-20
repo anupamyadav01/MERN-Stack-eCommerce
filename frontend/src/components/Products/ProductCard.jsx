@@ -4,42 +4,26 @@ import { useNavigate } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 import toast, { Toaster } from "react-hot-toast";
 import axiosInstance from "../../axiosCongig";
-import { useDispatch } from "react-redux";
-import { updateCartItems } from "../../redux/slices/cartSlice";
 
 const ProductCard = ({ product }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const showProductDetails = (productId) => {
     navigate(`/product/${productId}`);
   };
+  const handleAddToCart = async (prodId) => {
+    console.log(prodId);
 
-  const handleAddToCart = async (productId) => {
     try {
-      const response = await axiosInstance.post(`/cart/add-to-cart`, {
-        productId,
-        quantity: 1,
+      await axiosInstance.post(`/product/addToCart/${prodId}`, {
+        productId: prodId,
       });
-
-      dispatch(updateCartItems(response?.data?.user?.cartItem));
-      if (response.statusCode === 200) {
-        toast.success("Product added to cart", {
-          position: "top-right",
-        });
-      }
+      toast.success("Product added to cart successfully!", {
+        position: "top-right",
+      });
     } catch (error) {
-      console.log(error);
-      if (error.status === 401) {
-        toast.error("Please login to add to cart", {
-          position: "top-right",
-        });
-        setTimeout(() => {
-          navigate("/signin");
-        }, 2000);
-      }
+      console.log("ERROR FROM ADD TO CARD", error);
     }
   };
-
   return (
     <div className="max-w-sm w-full bg-[#F5F7FA] rounded-2xl shadow-md px-6 py-8 relative">
       <Toaster />
@@ -58,7 +42,7 @@ const ProductCard = ({ product }) => {
           alt={product?.title}
         />
       </div>
-      {/* Wishlist and Compare Icons */}
+      {/* Wishlist */}
       <div className="absolute top-10 right-6 flex flex-col items-center space-y-2">
         <RiHeart3Fill className="text-[#5C5F80] hover:scale-105 hover:text-pink-600 hover:shadow-lg transition-all duration-300 cursor-pointer bg-[#EDEFF3] p-2 rounded-full w-12 h-12 shadow-md" />
       </div>

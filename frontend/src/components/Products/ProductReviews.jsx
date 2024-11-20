@@ -1,6 +1,11 @@
 import { useState } from "react";
+import axiosInstance from "../../axiosCongig";
+import { useParams } from "react-router-dom";
 
 const ProductReviews = () => {
+  const productId = useParams();
+  console.log(productId);
+
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [reviews, setReviews] = useState([]);
@@ -23,13 +28,21 @@ const ProductReviews = () => {
     }
   };
 
+  const handleAddReview = async (e) => {
+    try {
+      const response = await axiosInstance("/product/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto p-6">
       {/* Reviews Header */}
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">REVIEWS</h2>
 
       {/* No Reviews Message */}
-      {reviews.length === 0 ? (
+      {reviews?.length === 0 ? (
         <div className="bg-blue-100 text-blue-700 p-4 rounded-lg mb-4">
           No Reviews
         </div>
@@ -93,6 +106,7 @@ const ProductReviews = () => {
             {/* Submit Button */}
             <button
               type="submit"
+              onClick={handleAddReview}
               className="bg-black text-white px-6 py-2 rounded-lg font-semibold"
             >
               SUBMIT

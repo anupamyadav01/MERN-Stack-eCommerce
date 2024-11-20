@@ -5,6 +5,7 @@ import connectToMongoDB from "./services/connectToMongoDB.js";
 import userRouter from "./routes/userRoutes.js";
 import ProductRouter from "./routes/productRoutes.js";
 import { CartRouter } from "./routes/cartRoutes.js";
+import { ReviewRouter } from "./routes/reviewRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 9000;
@@ -39,6 +40,7 @@ connectToMongoDB();
 app.use("/api/user", userRouter);
 app.use("/api/product", ProductRouter);
 app.use("/api/cart", CartRouter);
+app.use("/api/review", ReviewRouter);
 
 // Start the server
 app.listen(PORT, () => {
