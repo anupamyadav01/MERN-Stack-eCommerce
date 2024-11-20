@@ -19,7 +19,7 @@ userRouter.post("/register", register);
 
 userRouter.post("/login", login);
 
-userRouter.post("/logout", logout);
+userRouter.post("/logout", getUserDetails, logout);
 
 userRouter.get("/users", authMiddleware, getUsers);
 
