@@ -130,7 +130,7 @@ export const checkLoggedIn = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-  res.clearCookie("token");
+  res.cookie("token", "", { maxAge: 1 });
   res.status(200).json({ message: "Logged out successfully" });
 };
 
