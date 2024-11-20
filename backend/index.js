@@ -6,35 +6,28 @@ import userRouter from "./routes/userRoutes.js";
 import ProductRouter from "./routes/productRoutes.js";
 import { CartRouter } from "./routes/cartRoutes.js";
 import { ReviewRouter } from "./routes/reviewRoutes.js";
-
 const app = express();
+
+dotenv.config();
+
 const PORT = process.env.PORT || 9000;
 
-dotenv.config(); // Load environment variables
+app.use(
+  cors({
+    origin: [
+      "https://full-stack-ecommerce-rosy.vercel.app",
+      "http://localhost:5173",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+connectToMongoDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://full-stack-ecommerce-rosy.vercel.app",
-];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-};
-
-app.use(cors(corsOptions));
-
-// Connect to MongoDB
-connectToMongoDB();
 
 // Routes
 app.use("/api/user", userRouter);
