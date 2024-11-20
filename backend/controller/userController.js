@@ -83,7 +83,7 @@ export const login = async (req, res) => {
       expires: new Date(Date.now() + 3600000),
       httpOnly: true,
       secure: true,
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     });
 
     return res.status(200).json({ message: "Login successful" });
