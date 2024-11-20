@@ -80,9 +80,8 @@ export const login = async (req, res) => {
     });
     res.cookie("token", token, {
       path: "/",
-      expires: new Date(Date.now() + 3600000),
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     });
 
@@ -130,8 +129,22 @@ export const checkLoggedIn = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-  res.cookie("token", "", { maxAge: 1 });
-  res.status(200).json({ message: "Logged out successfully" });
+  try {
+    res.cookie("token", "", {
+      path: "/", // Match the path set during login
+      httpOnly: true,
+      secure: true, // Ensure secure cookies in production
+      sameSite: "None", // Allow cross-origin cookies
+      maxAge: 0, // Expire the cookie immediately
+    });
+
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Error during logout:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
+  }
 };
 
 export const forgotPassword = async (req, res) => {
