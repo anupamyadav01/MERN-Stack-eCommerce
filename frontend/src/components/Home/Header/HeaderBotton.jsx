@@ -1,7 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
-import { FaSearch, FaUser, FaCaretDown, FaShoppingCart } from "react-icons/fa";
+import {
+  FaSearch,
+  FaUser,
+  FaCaretDown,
+  FaShoppingCart,
+  FaHeart,
+} from "react-icons/fa";
 import Flex from "../../designLayouts/Flex";
 import { Link, useNavigate } from "react-router-dom";
 import { paginationItems } from "../../../constants";
@@ -17,6 +23,12 @@ const HeaderBottom = () => {
   const [showUser, setShowUser] = useState(false);
   const navigate = useNavigate();
   const ref = useRef();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [setShowSearchBar] = useState(false);
+
+  console.log("user details", userDetails);
+
   useEffect(() => {
     document.body.addEventListener("click", (e) => {
       if (ref?.current?.contains(e.target)) {
@@ -26,10 +38,6 @@ const HeaderBottom = () => {
       }
     });
   }, [show, ref]);
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [setShowSearchBar] = useState(false);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -41,6 +49,7 @@ const HeaderBottom = () => {
     );
     setFilteredProducts(filtered);
   }, [searchQuery]);
+
   const handleSignOut = async () => {
     if (!userDetails) {
       navigate("/signin");
@@ -50,10 +59,7 @@ const HeaderBottom = () => {
       if (response.status === 200) {
         dispatch(updateLoginState(false));
         dispatch(updateUser(null));
-        // setShowUser(!showUser);
-        // navigate("/");
       }
-      console.log(response);
 
       toast.success("User Logout successfully", {
         position: "top-right",
@@ -87,24 +93,7 @@ const HeaderBottom = () => {
                 transition={{ duration: 0.5 }}
                 className="absolute top-20 z-50 bg-[#262626] rounded-md w-auto text-[#767676] h-auto p-4 pb-6"
               >
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Accessories
-                </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Furniture
-                </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Electronics
-                </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Clothes
-                </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400  hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Bags
-                </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400  hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Home appliances
-                </li>
+                {/* Categories */}
               </motion.ul>
             )}
           </div>
@@ -131,9 +120,7 @@ const HeaderBottom = () => {
                             .split(" ")
                             .join("")}`,
                           {
-                            state: {
-                              item: item,
-                            },
+                            state: { item: item },
                           }
                         ) &
                         setShowSearchBar(true) &
@@ -166,7 +153,7 @@ const HeaderBottom = () => {
               <span className="font-medium text-xl">{userDetails?.name}</span>
             </div>
             <div onClick={() => setShowUser(!showUser)} className="flex">
-              <FaUser />
+              <FaUser className="w-5 h-5" />
               <FaCaretDown />
             </div>
             {showUser && (
@@ -177,26 +164,14 @@ const HeaderBottom = () => {
                 className="absolute top-10 right-0 w-44 z-50 rounded-md bg-[#262626] text-[#767676] h-auto p-4 pb-6 border"
               >
                 <Link>
-                  <li className="text-gray-400 px-4 py-1 border-b-[1px] font-normal border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                    {userDetails ? (
-                      <div
-                        className="flex items-center"
-                        onClick={handleSignOut}
-                      >
-                        <span>Sign Out</span>
-                      </div>
-                    ) : (
-                      <span
-                        onClick={() => {
-                          navigate("/signin");
-                        }}
-                      >
-                        Sign In
-                      </span>
-                    )}
+                  <li
+                    className="text-gray-400 px-4 py-1 border-b-[1px] font-normal border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer"
+                    onClick={handleSignOut}
+                  >
+                    Sign Out
                   </li>
                 </Link>
-                <Link onClick={() => setShowUser(false)} to="/signup">
+                <Link to="/signup">
                   <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
                     Register
                   </li>
@@ -204,17 +179,24 @@ const HeaderBottom = () => {
                 <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
                   Profile
                 </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400  hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Others
-                </li>
               </motion.ul>
             )}
+            {/* Wishlist */}
+            <Link to="/wishlist">
+              <div className="relative">
+                <FaHeart className="w-6 h-6" />
+                <span className="bg-red-500 absolute font-titleFont top-[-5px] right-[-8px] text-xs w-4 h-4 flex items-center justify-center rounded-full bg-primeColor text-white">
+                  {userDetails?.wishlist?.length}
+                </span>
+              </div>
+            </Link>
+            {/* Cart */}
             <Link to="/cart">
               <div className="relative">
-                <FaShoppingCart />
-                {/* <span className="absolute font-titleFont top-3 -right-2 text-xs w-4 h-4 flex items-center justify-center rounded-full bg-primeColor text-white">
-                  {products.length > 0 ? products.length : 0}
-                </span> */}
+                <FaShoppingCart className="w-6 h-6" />
+                <span className="bg-red-500 absolute font-titleFont top-[-5px] right-[-8px] text-xs w-4 h-4 flex items-center justify-center rounded-full bg-primeColor text-white">
+                  {userDetails?.cartItem?.length}
+                </span>
               </div>
             </Link>
           </div>

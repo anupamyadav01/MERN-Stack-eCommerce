@@ -13,34 +13,44 @@ const AdminSideBar = ({ active }) => {
       to: "/admin/dashboard",
       icon: <RxDashboard />,
       label: "Dashboard",
+      title: "Dashboard",
       id: 1,
     },
     {
       to: "/admin/orders",
       icon: <FiShoppingBag />,
       label: "All Orders",
+      title: "View all orders",
       id: 2,
     },
-    { to: "/admin/sellers", icon: <GrWorkshop />, label: "All Sellers", id: 3 },
+    {
+      to: "/admin/sellers",
+      icon: <GrWorkshop />,
+      label: "All Sellers",
+      title: "View all sellers",
+      id: 3,
+    },
     {
       to: "/admin/users",
       icon: <HiOutlineUserGroup />,
       label: "All Users",
+      title: "Manage users",
       id: 4,
     },
     {
       to: "/admin/products",
       icon: <BsHandbag />,
       label: "All Products",
+      title: "Manage products",
       id: 5,
     },
   ];
 
   return (
     <div className="w-full bg-white z-10">
-      {menuItems.map(({ to, icon, label, id }) => (
+      {menuItems.map(({ to, icon, label, title, id }) => (
         <div key={id} className="w-full p-4">
-          <Link to={to} className="flex justify-center">
+          <Link to={to} className="flex justify-center" title={title}>
             {React.cloneElement(icon, {
               size: 30,
               color: active === id ? "crimson" : "#555",

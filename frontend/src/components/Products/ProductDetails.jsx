@@ -34,7 +34,12 @@ const ProductDetails = () => {
       );
       console.log(response);
     } catch (error) {
-      console.log(error);
+      if (error?.status === 401) {
+        // TODO: ADD TOASTER
+        alert("Please login to add to wishlist");
+        return;
+      }
+      console.log("errror ", error);
     }
   };
   const handleAddToCart = async (prodId) => {

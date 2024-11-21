@@ -7,9 +7,10 @@ const productSlice = createSlice({
   },
   reducers: {
     updateProductsArray: (state, action) => {
-      state.products = [state.products, ...action.payload];
+      state.products = action.payload;
     },
   },
 });
+
 export const { updateProductsArray } = productSlice.actions;
 export default productSlice.reducer;

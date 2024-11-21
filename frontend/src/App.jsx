@@ -117,7 +117,9 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">
-      <RouterProvider router={router} />
+      <div className="w-[90%] mx-auto">
+        <RouterProvider router={router} />
+      </div>
     </div>
   );
 };
