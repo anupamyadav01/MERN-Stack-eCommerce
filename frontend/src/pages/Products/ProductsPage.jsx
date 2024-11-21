@@ -47,15 +47,13 @@ const ProductsPage = () => {
   }, [dispatch]);
 
   // Handle page change
-  // const handlePageChange = (pageNumber) => {
-  //   setCurrentPage(pageNumber);
-  // };
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, 300);
   };
+
   return (
     <div className="bg-gray-100 min-h-screen">
       <ProductNav
@@ -64,13 +62,16 @@ const ProductsPage = () => {
         setSortByValue={setSortByValue}
         sortByValue={sortByValue}
       />
-      <div className="flex justify-center items-start">
-        <div className="w-1/4">
+      <div className="flex justify-center items-start flex-col lg:flex-row">
+        {/* Sidebar - Adjusted for responsiveness */}
+        <div className="w-full lg:w-1/4 px-4 lg:px-0 mb-4 lg:mb-0">
           <Sidebar
             filterOptions={filterOptions}
             setFilterOptions={setFilterOptions}
           />
         </div>
+
+        {/* Product Grid - Flex container to make it responsive */}
         <div className="flex-1">
           <ProductGrid products={currentProducts} />
           {/* Pagination Controls */}

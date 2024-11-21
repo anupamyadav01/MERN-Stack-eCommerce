@@ -36,12 +36,17 @@ const AdminRoutes = lazy(() => import("./pages/Admin/AdminRoutes.jsx"));
 export const LoginContext = createContext();
 
 const Layout = () => (
-  <div>
+  <div className="flex flex-col min-h-screen bg-white">
+    {/* Header */}
     <Header />
     <HeaderBottom />
-    <div className="container mx-auto">
+
+    {/* Main Content */}
+    <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-6 bg-gray-50 shadow-md rounded-md">
       <Outlet />
-    </div>
+    </main>
+
+    {/* Footer */}
     <Footer />
     <FooterBottom />
   </div>
@@ -117,7 +122,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">
-      <div className="w-[90%] mx-auto">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <RouterProvider router={router} />
       </div>
     </div>

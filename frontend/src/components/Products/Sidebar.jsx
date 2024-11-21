@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   customerRating,
   discount,
@@ -20,6 +20,7 @@ const initialFilterOptions = {
 
 const Sidebar = ({ filterOptions, setFilterOptions }) => {
   const dispatch = useDispatch();
+  const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
 
   const handlePriceChange = (price) => {
     setFilterOptions({
@@ -45,18 +46,6 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
       brands: updatedBrands,
     });
   };
-
-  // const handleProductTypeChange = (type) => {
-  //   const isTypeSelected = filterOptions.types.includes(type);
-  //   const updatedProductTypes = isTypeSelected
-  //     ? filterOptions.types.filter((t) => t !== type)
-  //     : [...filterOptions.types, type];
-
-  //   setFilterOptions({
-  //     ...filterOptions,
-  //     types: updatedProductTypes,
-  //   });
-  // };
 
   const handleDiscountChange = (discount) => {
     setFilterOptions({
@@ -87,121 +76,119 @@ const Sidebar = ({ filterOptions, setFilterOptions }) => {
   }, [dispatch, filterOptions]);
 
   return (
-    <div className="w-64 bg-white p-6 shadow-md lg:block">
-      <h2 className="font-semibold text-lg mb-4">Filters</h2>
-
-      {/* Price Filter */}
-      <div className="mb-6">
-        <h3 className="font-medium mb-2">Price Based</h3>
-        <div className="space-y-1">
-          {productsPriceRange.map((price) => (
-            <label key={price.label} className="block">
-              <input
-                type="radio"
-                name="sortbyprice"
-                value={price.label}
-                className="mr-2"
-                checked={
-                  filterOptions.sortbyprice &&
-                  filterOptions.sortbyprice.min === price.min &&
-                  filterOptions.sortbyprice.max === price.max
-                }
-                onChange={() => handlePriceChange(price)}
-              />
-              {price.label}
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Customer rating filter */}
-      <div className="mb-6">
-        <h3 className="font-medium mb-2">Customer Rating</h3>
-        <div className="space-y-1">
-          {customerRating.map((rating) => (
-            <label key={rating.label} className="block">
-              <input
-                type="radio"
-                name="sortbyrating"
-                value={rating.label}
-                className="mr-2"
-                checked={filterOptions.sortbyrating === rating.value}
-                onChange={() => handleRatingChange(rating)}
-              />
-              {rating.label}
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Brand Filtering */}
-      <div className="mb-6">
-        <h3 className="font-medium mb-2">Product Brand</h3>
-        <div className="space-y-1">
-          {productsBrand.map((brand) => (
-            <label className="block" key={brand}>
-              <input
-                type="checkbox"
-                className="mr-2"
-                value={brand}
-                checked={filterOptions.brands.includes(brand)}
-                onChange={() => handleBrandChange(brand)}
-              />
-              {brand}
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Product Type Filter */}
-      {/* <div className="mb-6">
-        <h3 className="font-medium mb-2">Product Type</h3>
-        <div className="space-y-1">
-          {productsType.map((type) => (
-            <label className="block" key={type}>
-              <input
-                type="checkbox"
-                className="mr-2"
-                value={type}
-                checked={filterOptions.types.includes(type)}
-                onChange={() => handleProductTypeChange(type)}
-              />
-              {type}
-            </label>
-          ))}
-        </div>
-      </div> */}
-
-      {/* Discount Filtering */}
-      <div className="mb-6">
-        <h3 className="font-medium mb-2">Discount</h3>
-        <div className="space-y-1">
-          {discount.map((discountItem) => (
-            <label key={discountItem.label} className="block">
-              <input
-                type="radio"
-                name="sortbydiscount"
-                className="mr-2"
-                value={discountItem.value}
-                checked={filterOptions.discount === discountItem.value}
-                onChange={() => handleDiscountChange(discountItem)}
-              />
-              {discountItem.label}
-            </label>
-          ))}
-        </div>
-      </div>
-
-      <button className="bg-blue-500 text-white px-4 py-2 rounded-md w-full mt-4">
-        Apply Filters
-      </button>
-
+    <div>
       <button
-        className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md w-full mt-2"
-        onClick={handleResetFilters}
+        onClick={() => setShowFilters(!showFilters)}
+        className="bg-blue-500 text-white px-4 py-2 rounded-md w-full mb-4 lg:hidden"
       >
-        Reset Filters
+        {showFilters ? "Hide Filters" : "Show Filters"}
       </button>
+
+      {/* Filters Container */}
+      <div
+        className={`${
+          showFilters ? "block" : "hidden"
+        } lg:block bg-white p-4 lg:p-6 shadow-md`}
+      >
+        <h2 className="font-semibold text-lg mb-4">Filters</h2>
+
+        {/* Filters in Grid Layout */}
+        <div className="grid grid-cols-1 gap-4">
+          {/* Price Filter */}
+          <div>
+            <h3 className="font-medium mb-2">Price Based</h3>
+            <div className="space-y-1">
+              {productsPriceRange.map((price) => (
+                <label key={price.label} className="block">
+                  <input
+                    type="radio"
+                    name="sortbyprice"
+                    value={price.label}
+                    className="mr-2"
+                    checked={
+                      filterOptions.sortbyprice &&
+                      filterOptions.sortbyprice.min === price.min &&
+                      filterOptions.sortbyprice.max === price.max
+                    }
+                    onChange={() => handlePriceChange(price)}
+                  />
+                  {price.label}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Customer Rating Filter */}
+          <div>
+            <h3 className="font-medium mb-2">Customer Rating</h3>
+            <div className="space-y-1">
+              {customerRating.map((rating) => (
+                <label key={rating.label} className="block">
+                  <input
+                    type="radio"
+                    name="sortbyrating"
+                    value={rating.label}
+                    className="mr-2"
+                    checked={filterOptions.sortbyrating === rating.value}
+                    onChange={() => handleRatingChange(rating)}
+                  />
+                  {rating.label}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Brand Filtering */}
+          <div>
+            <h3 className="font-medium mb-2">Product Brand</h3>
+            <div className="space-y-1">
+              {productsBrand.map((brand) => (
+                <label className="block" key={brand}>
+                  <input
+                    type="checkbox"
+                    className="mr-2"
+                    value={brand}
+                    checked={filterOptions.brands.includes(brand)}
+                    onChange={() => handleBrandChange(brand)}
+                  />
+                  {brand}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Discount Filtering */}
+          <div>
+            <h3 className="font-medium mb-2">Discount</h3>
+            <div className="space-y-1">
+              {discount.map((discountItem) => (
+                <label key={discountItem.label} className="block">
+                  <input
+                    type="radio"
+                    name="sortbydiscount"
+                    className="mr-2"
+                    value={discountItem.value}
+                    checked={filterOptions.discount === discountItem.value}
+                    onChange={() => handleDiscountChange(discountItem)}
+                  />
+                  {discountItem.label}
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Buttons for Apply and Reset */}
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-md w-full mt-4">
+          Apply Filters
+        </button>
+        <button
+          className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md w-full mt-2"
+          onClick={handleResetFilters}
+        >
+          Reset Filters
+        </button>
+      </div>
     </div>
   );
 };

@@ -50,7 +50,7 @@ const HeaderBottom = () => {
       }
     };
     getWishlistItems();
-  }, [dispatch]);
+  }, []);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -177,16 +177,15 @@ const HeaderBottom = () => {
               </div>
             )}
           </div>
-          <div className=" px-4 max-md:w-full flex gap-4 mt-2 lg:mt-0  pr-6 cursor-pointer relative">
-            <div className="flex w-full justify-between items-center">
-              <div className="w-full lg:w-auto">
-                Hi,{" "}
-                <span className="font-medium text-xl">{userDetails?.name}</span>
-              </div>
+          <div className="justify-between w-full px-4 flex gap-4 mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
+            <div className="w-full lg:text-left">
+              Hi,{" "}
+              <span className="font-medium text-lg lg:text-xl">
+                {userDetails?.name}
+              </span>
             </div>
 
-            <div className="flex gap-4 w-full lg:w-auto justify-end items-center">
-              {/* User Icon and Dropdown */}
+            <div className="flex items-center justify-end w-full lg:w-auto gap-4">
               <div
                 onClick={() => setShowUser(!showUser)}
                 className="flex items-center"
@@ -199,7 +198,7 @@ const HeaderBottom = () => {
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="absolute top-10 right-0 w-44 z-50 rounded-md bg-[#262626] text-[#767676] h-auto p-4 pb-6 border"
+                  className="absolute top-12 lg:top-10 right-0 w-44 z-50 rounded-md bg-[#262626] text-[#767676] h-auto p-4 pb-6 border"
                 >
                   <Link>
                     <li
@@ -219,22 +218,20 @@ const HeaderBottom = () => {
                   </li>
                 </motion.ul>
               )}
-
               {/* Wishlist */}
               <Link to="/wishlist">
                 <div className="relative">
-                  <FaHeart className="w-6 h-6" />
-                  <span className="absolute top-[-5px] right-[-8px] text-xs w-4 h-4 flex items-center justify-center rounded-full bg-red-500 text-white">
+                  <FaHeart className="w-5 h-5" />
+                  <span className="bg-red-500 absolute font-titleFont top-[-5px] right-[-8px] text-xs w-4 h-4 flex items-center justify-center rounded-full bg-primeColor text-white">
                     {userDetails?.wishlist?.length || 0}
                   </span>
                 </div>
               </Link>
-
               {/* Cart */}
               <Link to="/cart">
                 <div className="relative">
-                  <FaShoppingCart className="w-6 h-6" />
-                  <span className="absolute top-[-5px] right-[-8px] text-xs w-4 h-4 flex items-center justify-center rounded-full bg-red-500 text-white">
+                  <FaShoppingCart className="w-5 h-5" />
+                  <span className="bg-red-500 absolute font-titleFont top-[-5px] right-[-8px] text-xs w-4 h-4 flex items-center justify-center rounded-full bg-primeColor text-white">
                     {cartItems?.length || 0}
                   </span>
                 </div>

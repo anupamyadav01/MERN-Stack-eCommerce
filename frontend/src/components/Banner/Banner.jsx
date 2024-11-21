@@ -105,22 +105,35 @@ const Banner = () => {
       },
     ],
   };
+
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white relative">
       <Slider {...settings}>
         <Link to="/products">
           <div>
-            <img src="./bannerImgOne.webp" alt="dd" />
+            <img
+              src="./bannerImgOne.webp"
+              alt="dd"
+              className="w-full h-auto object-cover"
+            />
           </div>
         </Link>
         <Link to="/products">
           <div>
-            <img src="./bannerImgTwo.webp" alt="dssdf" />
+            <img
+              src="./bannerImgTwo.webp"
+              alt="dssdf"
+              className="w-full h-auto object-cover"
+            />
           </div>
         </Link>
         <Link to="/products">
           <div>
-            <img src="./bannerImgThree.webp" alt="sfsdf" />
+            <img
+              src="./bannerImgThree.webp"
+              alt="sfsdf"
+              className="w-full h-auto object-cover"
+            />
           </div>
         </Link>
       </Slider>

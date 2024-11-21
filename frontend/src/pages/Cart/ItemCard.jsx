@@ -9,8 +9,8 @@ import {
 import axiosInstance from "../../axiosCongig";
 
 const ItemCard = ({ item }) => {
-  // const product = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
+
   const removeItem = async (itemId) => {
     try {
       const response = await axiosInstance.post("/cart/removeItem", { itemId });
@@ -23,45 +23,56 @@ const ItemCard = ({ item }) => {
   const { productId, quantity } = item;
 
   return (
-    <div className="w-full grid grid-cols-6 gap-10 mb-4 border py-2">
-      <div className="flex col-span-2 items-center gap-4 ml-4">
+    <div className="w-full grid grid-cols-1 sm:grid-cols-6 md:grid-cols-12 lg:grid-cols-6 gap-4 md:gap-6 py-4 px-4 border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-300 ease-in-out">
+      {/* Product Image and Title */}
+      <div className="col-span-1 sm:col-span-2 flex items-center gap-4">
         <img
-          className="w-40 h-40"
+          className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 object-cover rounded-md border border-gray-200 shadow-sm"
           src={productId.productImage}
           alt={productId.title}
         />
-        <h1 className="font-titleFont font-semibold">{productId.title}</h1>
+        <h1 className="font-semibold text-sm md:text-lg lg:text-xl text-gray-800">
+          {productId.title}
+        </h1>
       </div>
-      <div className="col-span-3 flex items-center justify-between py-4 gap-6">
-        <div className="flex w-1/3 items-center text-lg font-semibold">
-          ${productId.price}
-        </div>
-        <div className="w-1/3 flex items-center gap-6 text-lg">
-          <span
+
+      {/* Price, Quantity, and Subtotal */}
+      <div className="col-span-3 flex flex-col md:flex-row items-center justify-between text-center sm:text-left py-2 sm:py-0 gap-4 md:gap-6">
+        <p className="text-sm md:text-base lg:text-lg font-semibold text-gray-600">
+          ₹{productId.price}
+        </p>
+
+        <div className="flex items-center gap-3">
+          <button
             onClick={() => dispatch(decreaseQuantity({ _id: item._id }))}
-            className="w-6 h-6 bg-gray-100 text-2xl flex items-center justify-center hover:bg-gray-300 cursor-pointer duration-300 border-[1px] border-gray-300 hover:border-gray-300"
+            className="w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-800 font-bold rounded-md hover:bg-gray-200 active:bg-gray-300 transition"
           >
             -
+          </button>
+          <span className="text-sm md:text-base font-medium text-gray-700">
+            {quantity}
           </span>
-          <p>{quantity}</p>
-          <span
+          <button
             onClick={() => dispatch(increaseQuantity({ _id: item._id }))}
-            className="w-6 h-6 bg-gray-100 text-2xl flex items-center justify-center hover:bg-gray-300 cursor-pointer duration-300 border-[1px] border-gray-300 hover:border-gray-300"
+            className="w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-800 font-bold rounded-md hover:bg-gray-200 active:bg-gray-300 transition"
           >
             +
-          </span>
+          </button>
         </div>
-        <div className="w-1/3 flex items-center font-titleFont font-bold text-lg">
-          <p>$ {quantity * productId.price}</p>
-        </div>
+
+        <p className="text-sm md:text-base lg:text-lg font-bold text-gray-800">
+          ₹{(quantity * productId.price).toFixed(2)}
+        </p>
       </div>
+
+      {/* Remove Item */}
       <div className="col-span-1 flex items-center justify-center">
         <button
-          className="flex items-center justify-center gap-2 border border-black bg-black text-white px-5 py-2.5 rounded-lg shadow-lg hover:bg-gray-800 transition-all duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-400"
           onClick={() => removeItem(item?.productId?._id)}
+          className="flex items-center gap-2 bg-red-500 text-white text-sm md:text-base px-4 py-2 rounded-md hover:bg-red-600 active:bg-red-700 transition-all duration-200 shadow-sm transform hover:scale-105"
         >
-          <RiDeleteBin6Line className="text-2xl" />
-          <span className="text-lg font-semibold">Remove Item</span>
+          <RiDeleteBin6Line className="text-lg md:text-xl" />
+          Remove
         </button>
       </div>
     </div>

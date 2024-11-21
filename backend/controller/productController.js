@@ -43,15 +43,12 @@ export const getProductDetailsById = async (req, res) => {
   try {
     const { productId } = req.params;
 
-    // Check if productId is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       return res.status(400).json({
-        success: false,
         message: "Invalid product ID",
       });
     }
 
-    // Find the product by its ID
     const product = await ProductModel.findById(productId);
 
     // If no product is found
@@ -322,5 +319,17 @@ export const addToCart = async (req, res) => {
   } catch (error) {
     console.error("ERROR FROM ADDTOCART", error);
     res.status(500).json({ error: "An error occurred while adding to cart" });
+  }
+};
+
+export const getAllWishlistItems = async (req, res) => {
+  const userId = req?.user?._id;
+  try {
+    console.log(userId);
+  } catch (error) {
+    console.error("ERROR FROM GETALLWISHLISTITEMS", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching wishlist items" });
   }
 };

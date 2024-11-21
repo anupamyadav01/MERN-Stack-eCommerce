@@ -4,6 +4,7 @@ import {
   addToCart,
   addToWishlist,
   deleteProduct,
+  getAllWishlistItems,
   getProductDetailsById,
   rating,
   showProducts,
@@ -49,5 +50,7 @@ ProductRouter.get("/addToWishlist/:productId", getUserDetails, addToWishlist);
 ProductRouter.post("/rating/:productId", getUserDetails, rating);
 
 ProductRouter.post("/addToCart/:productId", getUserDetails, addToCart);
+
+ProductRouter.get("/getAllWishlistItems", getAllWishlistItems);
 
 export default ProductRouter;

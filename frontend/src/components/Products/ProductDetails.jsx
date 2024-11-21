@@ -27,10 +27,7 @@ const ProductDetails = () => {
   const addToWishlist = async () => {
     try {
       const response = await axiosInstance.get(
-        `/product/addToWishlist/${productId}`,
-        {
-          withCredentials: true,
-        }
+        `/product/addToWishlist/${productId}`
       );
       console.log(response);
     } catch (error) {
@@ -123,23 +120,22 @@ const ProductDetails = () => {
               </select>
             </div>
 
-            <div className="flex gap-6">
-              {" "}
-              {/* Adding space between buttons */}
+            <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
               {/* Add to Cart Button */}
               <button
-                className="w-full bg-black text-white py-3 font-semibold rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center"
+                className="w-full bg-black text-white py-2 lg:py-3 text-sm lg:text-base font-semibold rounded-md lg:rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center"
                 onClick={() => handleAddToCart(product?._id)}
               >
-                <AiOutlineShoppingCart className="mr-2 text-2xl" />
+                <AiOutlineShoppingCart className="mr-2 text-xl lg:text-2xl" />
                 ADD TO CART
               </button>
+
               {/* Add to Wishlist Button */}
               <button
-                className="w-full bg-gray-300 text-black py-3 font-semibold rounded-lg hover:bg-gray-400 transition-colors flex items-center justify-center"
+                className="w-full bg-gray-300 text-black py-2 lg:py-3 text-sm lg:text-base font-semibold rounded-md lg:rounded-lg hover:bg-gray-400 transition-colors flex items-center justify-center"
                 onClick={() => addToWishlist(product?._id)}
               >
-                <AiOutlineHeart className="mr-2 text-2xl" />
+                <AiOutlineHeart className="mr-2 text-xl lg:text-2xl" />
                 ADD TO WISHLIST
               </button>
             </div>
