@@ -12,6 +12,8 @@ import axiosInstance from "../../axiosCongig";
 const Cart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state?.cart?.cartItems);
+  const userInfo = useSelector((state) => state?.user?.userInfo);
+  console.log(userInfo);
 
   const [totalAmt, setTotalAmt] = useState(0);
   const [shippingCharge, setShippingCharge] = useState(0);
