@@ -181,7 +181,9 @@ const HeaderBottom = () => {
             <div className="flex w-full justify-between items-center">
               <div className="w-full lg:w-auto">
                 Hi,{" "}
-                <span className="font-medium text-xl">{userDetails?.name}</span>
+                <span className="font-medium sm:text-xl">
+                  {userDetails?.name}
+                </span>
               </div>
             </div>
 
@@ -214,9 +216,12 @@ const HeaderBottom = () => {
                       Register
                     </li>
                   </Link>
-                  <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
+                  <Link
+                    to="/profile"
+                    className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer"
+                  >
                     Profile
-                  </li>
+                  </Link>
                 </motion.ul>
               )}
 

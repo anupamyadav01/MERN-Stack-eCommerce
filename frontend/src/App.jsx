@@ -30,6 +30,8 @@ import Cart from "./pages/Cart/Cart.jsx";
 import ProductsPage from "./pages/Products/ProductsPage.jsx";
 import ProductDetails from "./components/Products/ProductDetails.jsx";
 import axiosInstance from "./axiosCongig.js";
+import WishlistPage from "./pages/WishList/WishLIst.jsx";
+import UserProfile from "./pages/UserProfile/UserProfile.jsx";
 
 // Lazy load AdminRoutes
 const AdminRoutes = lazy(() => import("./pages/Admin/AdminRoutes.jsx"));
@@ -72,6 +74,8 @@ const router = createBrowserRouter(
         <Route index element={<Home />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/FAQs" element={<FAQPage />} />
         <Route path="/products" element={<ProductsPage />} />

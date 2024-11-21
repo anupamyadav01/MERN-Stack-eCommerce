@@ -31,10 +31,10 @@ const Cart = () => {
   useEffect(() => {
     let price = 0;
     cartItems?.forEach((item) => {
-      const itemPrice = item.productId.price;
-      const discount = (itemPrice * item.productId.discountPercentage) / 100;
+      const itemPrice = item?.productId?.price;
+      const discount = (itemPrice * item?.productId?.discountPercentage) / 100;
       const discountedPrice = itemPrice - discount;
-      price += discountedPrice * item.quantity;
+      price += discountedPrice * item?.quantity;
     });
     setTotalAmt(price);
   }, [cartItems]);

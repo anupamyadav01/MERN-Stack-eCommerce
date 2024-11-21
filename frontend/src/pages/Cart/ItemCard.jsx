@@ -28,18 +28,18 @@ const ItemCard = ({ item }) => {
       <div className="col-span-1 sm:col-span-2 flex items-center gap-4">
         <img
           className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 object-cover rounded-md border border-gray-200 shadow-sm"
-          src={productId.productImage}
-          alt={productId.title}
+          src={productId?.productImage}
+          alt={productId?.title}
         />
         <h1 className="font-semibold text-sm md:text-lg lg:text-xl text-gray-800">
-          {productId.title}
+          {productId?.title}
         </h1>
       </div>
 
       {/* Price, Quantity, and Subtotal */}
       <div className="col-span-3 flex flex-col md:flex-row items-center justify-between text-center sm:text-left py-2 sm:py-0 gap-4 md:gap-6">
         <p className="text-sm md:text-base lg:text-lg font-semibold text-gray-600">
-          ₹{productId.price}
+          ₹{productId?.price}
         </p>
 
         <div className="flex items-center gap-3">
@@ -61,7 +61,7 @@ const ItemCard = ({ item }) => {
         </div>
 
         <p className="text-sm md:text-base lg:text-lg font-bold text-gray-800">
-          ₹{(quantity * productId.price).toFixed(2)}
+          ₹{(quantity * productId?.price)?.toFixed(2)}
         </p>
       </div>
 
