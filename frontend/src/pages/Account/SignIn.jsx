@@ -18,212 +18,137 @@ const SignIn = () => {
   const [successMsg, setSuccessMsg] = useState("");
 
   const navigate = useNavigate();
+
   const handleEmail = (e) => {
     setEmail(e.target.value);
     setErrEmail("");
   };
+
   const handlePassword = (e) => {
     setPassword(e.target.value);
     setErrPassword("");
   };
+
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    if (!email) {
-      setErrEmail("Enter your email");
-    }
-    if (!password) {
-      setErrPassword("Create a password");
-    }
+    if (!email) setErrEmail("Enter your email");
+    if (!password) setErrPassword("Create a password");
+
     if (email && password) {
       try {
         const response = await axiosInstance.post(
           `/user/login`,
-          {
-            email,
-            password,
-          },
-          {
-            withCredentials: true,
-          }
+          { email, password },
+          { withCredentials: true }
         );
         if (response.status === 200) {
           dispatch(updateLoginState(true));
           toast.success("User LoggedIn Successfully", {
             position: "top-right",
           });
-          setTimeout(() => {
-            navigate("/");
-          }, 2000);
+          setTimeout(() => navigate("/"), 2000);
         }
       } catch (error) {
-        if (error?.response?.data?.message) {
-          toast.error(error?.response?.data?.message, {
-            position: "top-right",
-          });
-        } else {
-          toast.error("Something went wrong. Please try again.", {
-            position: "top-right",
-          });
-        }
-
-        console.log("User login failed -->", error);
+        toast.error(
+          error?.response?.data?.message ||
+            "Something went wrong. Please try again.",
+          { position: "top-right" }
+        );
       }
       setSuccessMsg(
-        `Hello dear, Thank you for your attempt. We are processing to validate your access. Till then stay connected and additional assistance will be sent to you by your mail at ${email}`
+        `Hello, thank you for logging in. Additional details have been sent to your email: ${email}.`
       );
       setEmail("");
       setPassword("");
     }
   };
+
   return (
-    <div className="w-full h-screen flex items-center justify-center">
-      <div className="w-1/2 lgl:inline-flex h-full text-white bg-[#262625]">
-        <div className="w-[450px] h-full bg-primeColor px-10 flex flex-col gap-6 justify-center">
-          <Link to="/">
-            <img src={logoLight} alt="logoImg" className="w-28" />
-          </Link>
-          <div className="flex flex-col gap-1 -mt-1">
-            <h1 className="font-titleFont text-xl font-medium">
-              Stay sign in for more
-            </h1>
-            <p className="text-base">When you sign in, you are with us!</p>
-          </div>
-          <div className="w-[300px] flex items-start gap-3">
-            <span className="text-green-500 mt-1">
-              <BsCheckCircleFill />
-            </span>
-            <p className="text-base text-gray-300">
-              <span className="text-white font-semibold font-titleFont">
-                Get started fast with OREBI
-              </span>
-              <br />
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis
-              nisi dolor recusandae consectetur!
-            </p>
-          </div>
-          <div className="w-[300px] flex items-start gap-3">
-            <span className="text-green-500 mt-1">
-              <BsCheckCircleFill />
-            </span>
-            <p className="text-base text-gray-300">
-              <span className="text-white font-semibold font-titleFont">
-                Access all OREBI services
-              </span>
-              <br />
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis
-              nisi dolor recusandae consectetur!
-            </p>
-          </div>
-          <div className="w-[300px] flex items-start gap-3">
-            <span className="text-green-500 mt-1">
-              <BsCheckCircleFill />
-            </span>
-            <p className="text-base text-gray-300">
-              <span className="text-white font-semibold font-titleFont">
-                Trusted by online Shoppers
-              </span>
-              <br />
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis
-              nisi dolor recusandae consectetur!
-            </p>
-          </div>
-          <div className="flex items-center justify-between mt-10">
-            <Link to="/">
-              <p className="text-sm font-titleFont font-semibold text-gray-300 hover:text-white cursor-pointer duration-300">
-                © OREBI
+    <div className="flex flex-col lg:flex-row items-center justify-between min-h-screen bg-gray-100">
+      {/* Left Section */}
+      <div className="lg:w-1/2 w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 text-white p-6 lg:px-10">
+        <Link to="/" className="mb-6">
+          <img src={logoLight} alt="logo" className="w-32" />
+        </Link>
+        <h1 className="text-3xl font-bold mb-4">Stay signed in for more</h1>
+        <p className="text-lg mb-6">When you sign in, you're with us!</p>
+        <div className="space-y-4 text-left">
+          {[
+            "Get started fast with OREBI",
+            "Access all OREBI services",
+            "Trusted by online shoppers",
+          ].map((item, index) => (
+            <div key={index} className="flex items-start gap-4">
+              <BsCheckCircleFill className="text-green-500 text-xl" />
+              <p className="text-base">
+                <span className="font-semibold">{item}</span>
+                <br />
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
               </p>
-            </Link>
-            <p className="text-sm font-titleFont font-semibold text-gray-300 hover:text-white cursor-pointer duration-300">
-              Terms
-            </p>
-            <p className="text-sm font-titleFont font-semibold text-gray-300 hover:text-white cursor-pointer duration-300">
-              Privacy
-            </p>
-            <p className="text-sm font-titleFont font-semibold text-gray-300 hover:text-white cursor-pointer duration-300">
-              Security
-            </p>
-          </div>
+            </div>
+          ))}
         </div>
       </div>
-      <div className="w-full lgl:w-1/2 h-full">
+
+      {/* Right Section */}
+      <div className="lg:w-1/2 w-full flex items-center justify-center bg-white shadow-lg p-6 lg:p-10">
         {successMsg ? (
-          <div className="w-full lgl:w-[500px] h-full flex flex-col justify-center">
-            <p className="w-full px-4 py-10 text-green-500 font-medium font-titleFont">
+          <div className="text-center">
+            <p className="text-lg text-green-500 font-medium mb-6">
               {successMsg}
             </p>
             <Link to="/signup">
-              <button
-                className="w-full h-10 bg- text-gray-200 rounded-md text-base font-titleFont font-semibold 
-            tracking-wide hover:bg-black hover:text-white duration-300"
-              >
+              <button className="px-6 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition">
                 Sign Up
               </button>
             </Link>
           </div>
         ) : (
-          <form className="w-full lgl:w-[450px] h-screen flex items-center justify-center">
-            <div className="px-6 py-4 border w-[44%] flex flex-col justify-center">
-              <h1 className=" underline text-black underline-offset-4 decoration-[1px] font-bold text-4xl mdl:text-4xl mb-4">
-                Sign in
-              </h1>
-              <div className="flex flex-col gap-3">
-                {/* Email */}
-                <div className="flex flex-col gap-.5">
-                  <p className="font-titleFont text-base font-semibold text-gray-600">
-                    Work Email
-                  </p>
-                  <input
-                    onChange={handleEmail}
-                    value={email}
-                    className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
-                    type="email"
-                    placeholder="john@workemail.com"
-                  />
-                  {errEmail && (
-                    <p className="text-sm text-red-500 font-titleFont font-semibold px-4">
-                      <span className="font-bold italic mr-1">!</span>
-                      {errEmail}
-                    </p>
-                  )}
-                </div>
-
-                {/* Password */}
-                <div className="flex flex-col gap-.5">
-                  <p className="font-titleFont text-base font-semibold text-gray-600">
-                    Password
-                  </p>
-                  <input
-                    onChange={handlePassword}
-                    value={password}
-                    className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
-                    type="password"
-                    placeholder="Create password"
-                  />
-                  {errPassword && (
-                    <p className="text-sm text-red-500 font-titleFont font-semibold px-4">
-                      <span className="font-bold italic mr-1">!</span>
-                      {errPassword}
-                    </p>
-                  )}
-                </div>
-
-                <button
-                  onClick={handleSignUp}
-                  className="bg-gray-900 hover:bg-black text-gray-200 hover:text-white cursor-pointer w-full text-base font-medium h-10 rounded-md  duration-300"
-                >
-                  Sign In
-                </button>
-                <p className="text-sm text-center font-titleFont font-medium">
-                  Don't have an Account?{" "}
-                  <Link to="/signup">
-                    <span className="hover:text-blue-600 duration-300">
-                      Sign up
-                    </span>
-                  </Link>
-                </p>
-              </div>
+          <form className="space-y-4 w-full max-w-sm">
+            <h1 className="text-2xl font-semibold text-gray-800 mb-4">
+              Sign In
+            </h1>
+            <div className="space-y-2">
+              <label className="block text-gray-600 font-medium">
+                Work Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={handleEmail}
+                placeholder="john@example.com"
+                className="w-full p-2 border rounded-md shadow-sm"
+              />
+              {errEmail && <p className="text-sm text-red-500">{errEmail}</p>}
             </div>
+            <div className="space-y-2">
+              <label className="block text-gray-600 font-medium">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={handlePassword}
+                placeholder="Enter your password"
+                className="w-full p-2 border rounded-md shadow-sm"
+              />
+              {errPassword && (
+                <p className="text-sm text-red-500">{errPassword}</p>
+              )}
+            </div>
+            <button
+              onClick={handleSignUp}
+              className="w-full py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition font-medium"
+            >
+              Sign In
+            </button>
+            <p className="text-center text-gray-600 mt-4">
+              Don't have an account?{" "}
+              <Link to="/signup" className="text-blue-600 hover:underline">
+                Sign Up
+              </Link>
+            </p>
           </form>
         )}
       </div>

@@ -206,11 +206,14 @@ const HeaderBottom = () => {
                   <Link>
                     <li
                       className="text-gray-400 px-4 py-1 border-b-[1px] font-normal border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer"
-                      onClick={handleSignOut}
+                      onClick={
+                        userDetails ? handleSignOut : () => navigate("/signin")
+                      }
                     >
-                      Sign Out
+                      {userDetails ? "Sign Out" : "Sign In"}
                     </li>
                   </Link>
+
                   <Link to="/signup">
                     <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
                       Register
